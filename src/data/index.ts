@@ -157,7 +157,7 @@ export function getAllSeries(): Series[] {
         lastEpisodeDate: dr?.last ?? null,
       };
     })
-    .sort((a, b) => b.episodeCount - a.episodeCount);
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function getSeriesBySlug(slug: string): Series | undefined {
