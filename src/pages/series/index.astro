@@ -43,25 +43,45 @@ const series = getAllSeries();
           {s.description && (
             <p class="mt-2 text-sm text-gray-600 dark:text-stone-300">{s.description}</p>
           )}
-          <p class="mt-2 text-xs text-gray-400 dark:text-stone-500">
+          <div class="mt-3 flex items-center gap-3 text-xs text-gray-400 dark:text-stone-500">
             <a
               href={`/series/${s.slug}/feed.xml`}
-              class="hover:text-gray-600 dark:hover:text-stone-300"
+              class="inline-flex items-center gap-1 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
               onclick="event.stopPropagation()"
-            >RSS</a>
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                <path d="M3.75 3a.75.75 0 0 0-.75.75v.5c0 .414.336.75.75.75H4c6.075 0 11 4.925 11 11v.25c0 .414.336.75.75.75h.5a.75.75 0 0 0 .75-.75V16C17 8.82 11.18 3 4 3h-.25Z"/>
+                <path d="M3 8.75A.75.75 0 0 1 3.75 8H4a8 8 0 0 1 8 8v.25a.75.75 0 0 1-.75.75h-.5a.75.75 0 0 1-.75-.75V16a6 6 0 0 0-6-6h-.25A.75.75 0 0 1 3 9.25v-.5ZM7 15a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+              </svg>
+              Feed
+            </a>
+            <a
+              href={`/series/${s.slug}/feed-fringe.xml`}
+              class="inline-flex items-center gap-1 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+              onclick="event.stopPropagation()"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                <path d="M3.75 3a.75.75 0 0 0-.75.75v.5c0 .414.336.75.75.75H4c6.075 0 11 4.925 11 11v.25c0 .414.336.75.75.75h.5a.75.75 0 0 0 .75-.75V16C17 8.82 11.18 3 4 3h-.25Z"/>
+                <path d="M3 8.75A.75.75 0 0 1 3.75 8H4a8 8 0 0 1 8 8v.25a.75.75 0 0 1-.75.75h-.5a.75.75 0 0 1-.75-.75V16a6 6 0 0 0-6-6h-.25A.75.75 0 0 1 3 9.25v-.5ZM7 15a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+              </svg>
+              Feed + Fringe
+            </a>
             {s.itunesUrl && (
-              <span>
-                {" · "}
-                <a
-                  href={s.itunesUrl}
-                  class="hover:text-gray-600 dark:hover:text-stone-300"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onclick="event.stopPropagation()"
-                >iTunes</a>
-              </span>
+              <a
+                href={s.itunesUrl}
+                class="inline-flex items-center gap-1 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick="event.stopPropagation()"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5">
+                  <path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z"/>
+                  <path d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z"/>
+                </svg>
+                iTunes
+              </a>
             )}
-          </p>
+          </div>
         </a>
       );
     })}

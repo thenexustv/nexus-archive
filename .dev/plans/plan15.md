@@ -24,12 +24,15 @@ Added fringe variant RSS feeds, visible feed links in the UI, HTML autodiscovery
 
 ### Modified: `src/pages/series/[...slug].astro`
 - Added "Feed", "Feed + Fringe", and "iTunes" links in the series detail page header after the Archived badge
+- Each link has a Heroicons mini SVG icon (RSS icon for feeds, arrow-top-right-on-square for iTunes)
+- Feed links hover orange, iTunes hovers purple
 - iTunes link only shown for series that have one (9 of 11)
 - Passes both feeds to Base layout for autodiscovery `<link>` tags
 
 ### Modified: `src/pages/series/index.astro`
-- Added subtle "RSS" text link at the bottom of each series card
-- Added "iTunes" link (with middot separator) for series that have an iTunes URL
+- Added "Feed", "Feed + Fringe", and "iTunes" links at the bottom of each series card
+- Same icon and color treatment as the series detail page
+- Links use `event.stopPropagation()` to avoid navigating the card's parent `<a>` element
 
 ### Modified: `src/layouts/Base.astro`
 - Added optional `feeds` prop (`{ title, url }[]`)
