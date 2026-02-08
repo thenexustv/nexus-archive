@@ -1,6 +1,6 @@
 # nexus-archive
 
-A static archive of [thenexus.tv](https://thenexus.tv), a podcast network that produced 1,384+ episodes across 13 series between 2011 and 2020. Built with Astro, TailwindCSS, and React.
+A static archive of [thenexus.tv](https://thenexus.tv), a podcast network that produced 1,384+ episodes across 13 series between 2011 and 2022. Built with Astro, TailwindCSS, and React.
 
 The original site ran on WordPress with the [Nexus Core](https://github.com/thenexustv/nexus-core) plugin and [Coprime](https://github.com/thenexustv/coprime) theme. This project replaces it with a fully static site generated from a JSON data export.
 
