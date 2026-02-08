@@ -1,0 +1,16 @@
+services:
+  nexus-archive:
+    build: .
+    container_name: nexus-archive
+    restart: unless-stopped
+    ports:
+      - "4321:4321"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4321
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4321/_health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
