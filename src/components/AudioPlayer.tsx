@@ -7,7 +7,7 @@ interface AudioPlayerProps {
   title: string;
 }
 
-function parseDuration(str: string | null): number {
+export function parseDuration(str: string | null): number {
   if (!str) return 0;
   const parts = str.split(":").map(Number);
   if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
@@ -15,7 +15,7 @@ function parseDuration(str: string | null): number {
   return parts[0] || 0;
 }
 
-function formatTime(seconds: number): string {
+export function formatTime(seconds: number): string {
   const s = Math.floor(seconds);
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);

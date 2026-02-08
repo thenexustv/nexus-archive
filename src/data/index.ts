@@ -13,14 +13,14 @@ import type {
 
 const data = rawData as RawExport;
 
-function slugifyName(name: string): string {
+export function slugifyName(name: string): string {
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
 
-function makeEpisodeSlug(seriesSlug: string, number: string): string {
+export function makeEpisodeSlug(seriesSlug: string, number: string): string {
   return `${seriesSlug}${number}`;
 }
 
@@ -99,7 +99,7 @@ for (const ep of data.episodes) {
 
 const personEmailById = new Map(data.people.map((p) => [p.id, p.email]));
 
-function gravatarUrl(email: string | undefined): string | null {
+export function gravatarUrl(email: string | undefined): string | null {
   if (!email) return null;
   const hash = createHash("md5")
     .update(email.trim().toLowerCase())
@@ -109,7 +109,7 @@ function gravatarUrl(email: string | undefined): string | null {
 
 // --- Process content: external links open in new tabs ---
 
-function processContent(html: string): string {
+export function processContent(html: string): string {
   return html.replace(
     /<a\s+([^>]*?)href="(https?:\/\/[^"]*)"([^>]*)>/gi,
     (match, before, url, after) => {
