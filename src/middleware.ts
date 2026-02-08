@@ -32,11 +32,6 @@ function normalizeSlug(raw: string): string | null {
 export const onRequest = defineMiddleware((context, next) => {
   const { pathname } = context.url;
 
-  // Health check endpoint for container orchestration
-  if (pathname === "/_health") {
-    return new Response("ok", { status: 200 });
-  }
-
   // /episode/ (singular list) → /episodes/
   if (pathname === "/episode" || pathname === "/episode/") {
     return context.redirect("/episodes/", 301);

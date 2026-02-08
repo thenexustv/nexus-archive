@@ -85,7 +85,7 @@ curl -I https://thenexus.tv/
 ## Verification
 
 - `curl -I https://thenexus.tv/` — returns 200 with HTML
-- `curl -I https://thenexus.tv/_health` — returns 200 "ok"
+- `curl -I https://thenexus.tv/api/health` — returns 200 "ok"
 - `curl -I http://thenexus.tv/` — returns 301 redirect to HTTPS (unchanged behavior)
 - Apache error log shows no proxy errors
 - Let's Encrypt cert renewal still works (`sudo certbot renew --dry-run`)

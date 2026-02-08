@@ -109,7 +109,7 @@ podman compose up -d
 ### Verify the container works
 
 ```bash
-curl http://localhost:4321/_health
+curl http://localhost:4321/api/health
 # Expected: "ok"
 
 podman ps
@@ -144,7 +144,7 @@ Image=localhost/nexus-archive_nexus-archive:latest
 PublishPort=127.0.0.1:4321:4321
 Environment=HOST=0.0.0.0
 Environment=PORT=4321
-HealthCmd=curl -sf http://localhost:4321/_health
+HealthCmd=curl -sf http://localhost:4321/api/health
 HealthInterval=30s
 HealthTimeout=5s
 HealthRetries=3
@@ -245,6 +245,6 @@ Each container is independently managed by systemd. No shared daemon means one c
 - `podman compose version` — delegates to podman-compose 1.0.6
 - `loginctl show-user ryan -p Linger` — shows `Linger=yes`
 - `systemctl --user status nexus-archive` — active (running)
-- `curl http://localhost:4321/_health` — returns "ok"
+- `curl http://localhost:4321/api/health` — returns "ok"
 - Container auto-starts after `sudo reboot`
 - Apache proxies to container successfully (Plan 12 verification)

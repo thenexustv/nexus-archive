@@ -33,11 +33,11 @@ Keep: `export/` (needed at build time for JSON data)
 
 ### 3. `docker-compose.yml`
 
-Single-service compose with `curl`-based health check against `/_health` endpoint.
+Single-service compose with `curl`-based health check against `/api/health` endpoint.
 
 ### 4. `src/middleware.ts`
 
-Added `/_health` endpoint as early return in existing middleware — returns plain `200 ok` before any redirect logic.
+Added `/api/health` endpoint as early return in existing middleware — returns plain `200 ok` before any redirect logic.
 
 ## Key Details
 
@@ -51,6 +51,6 @@ Added `/_health` endpoint as early return in existing middleware — returns pla
 
 - `docker compose build` — succeeds
 - `docker compose up -d` — container starts
-- `curl http://localhost:4321/_health` — returns "ok"
+- `curl http://localhost:4321/api/health` — returns "ok"
 - `docker inspect nexus-archive` — health check shows "healthy" after ~40s
 - `pnpm build` — still works locally (no regressions)
