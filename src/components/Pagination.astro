@@ -1,0 +1,75 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+function pageUrl(page: number): string {
+  if (page === 1) return `${baseUrl}/`;
+  return `${baseUrl}/${page}/`;
+}
+
+const hasPrev = currentPage > 1;
+const hasNext = currentPage < totalPages;
+
+const range: number[] = [];
+const start = Math.max(1, currentPage - 2);
+const end = Math.min(totalPages, currentPage + 2);
+for (let i = start; i <= end; i++) {
+  range.push(i);
+}
+---
+
+{totalPages > 1 && (
+  <nav class="flex items-center gap-2 mt-8 text-sm" aria-label="Pagination">
+    {hasPrev && (
+      <a
+        href={pageUrl(currentPage - 1)}
+        class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50"
+      >
+        Previous
+      </a>
+    )}
+
+    {start > 1 && (
+      <>
+        <a href={pageUrl(1)} class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">1</a>
+        {start > 2 && <span class="px-2 text-gray-400">…</span>}
+      </>
+    )}
+
+    {range.map((page) => (
+      <a
+        href={pageUrl(page)}
+        class:list={[
+          "px-3 py-1.5 border rounded",
+          page === currentPage
+            ? "border-blue-600 bg-blue-600 text-white"
+            : "border-gray-300 hover:bg-gray-50",
+        ]}
+        aria-current={page === currentPage ? "page" : undefined}
+      >
+        {page}
+      </a>
+    ))}
+
+    {end < totalPages && (
+      <>
+        {end < totalPages - 1 && <span class="px-2 text-gray-400">…</span>}
+        <a href={pageUrl(totalPages)} class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">{totalPages}</a>
+      </>
+    )}
+
+    {hasNext && (
+      <a
+        href={pageUrl(currentPage + 1)}
+        class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50"
+      >
+        Next
+      </a>
+    )}
+  </nav>
+)}

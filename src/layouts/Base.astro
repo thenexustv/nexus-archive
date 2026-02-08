@@ -1,0 +1,48 @@
+---
+import "../styles/global.css";
+import { SITE_TITLE } from "../data";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} — ${SITE_TITLE}` : SITE_TITLE;
+const pageDescription = description ?? "Archive of thenexus.tv podcasts";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={pageDescription} />
+    <title>{pageTitle}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-white text-gray-900 min-h-screen flex flex-col">
+    <header class="border-b border-gray-200 bg-gray-50">
+      <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center gap-6">
+        <a href="/" class="text-lg font-bold text-gray-900 hover:text-blue-600">
+          {SITE_TITLE}
+        </a>
+        <div class="flex gap-4 text-sm">
+          <a href="/episodes/" class="text-gray-600 hover:text-gray-900">Episodes</a>
+          <a href="/series/" class="text-gray-600 hover:text-gray-900">Series</a>
+          <a href="/people/" class="text-gray-600 hover:text-gray-900">People</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-1 w-full">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-200 bg-gray-50 mt-auto">
+      <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500">
+        <p>{SITE_TITLE} &mdash; podcast archive</p>
+      </div>
+    </footer>
+  </body>
+</html>

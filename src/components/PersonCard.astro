@@ -1,0 +1,19 @@
+---
+import type { Person } from "../data/types";
+
+interface Props {
+  person: Person;
+}
+
+const { person } = Astro.props;
+---
+
+<a
+  href={`/people/${person.slug}/`}
+  class="block p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+>
+  <div class="font-medium text-gray-900">{person.name}</div>
+  <div class="mt-1 text-sm text-gray-500">
+    {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
+  </div>
+</a>
