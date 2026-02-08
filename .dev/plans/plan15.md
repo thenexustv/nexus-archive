@@ -30,9 +30,10 @@ Added fringe variant RSS feeds, visible feed links in the UI, HTML autodiscovery
 - Passes both feeds to Base layout for autodiscovery `<link>` tags
 
 ### Modified: `src/pages/series/index.astro`
+- Changed card wrapper from `<a>` to `<div>` to avoid invalid nested `<a>` elements (browsers auto-close the parent anchor, pushing feed links outside the card as separate grid items)
+- Series name is now the only `<a>` link in the card header
 - Added "Feed", "Feed + Fringe", and "iTunes" links at the bottom of each series card
 - Same icon and color treatment as the series detail page
-- Links use `event.stopPropagation()` to avoid navigating the card's parent `<a>` element
 
 ### Modified: `src/layouts/Base.astro`
 - Added optional `feeds` prop (`{ title, url }[]`)
