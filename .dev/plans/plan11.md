@@ -16,11 +16,11 @@ Multi-stage build:
 **Stage 1 — Builder (`node:24-alpine`):**
 - Enable pnpm via corepack
 - Copy dependency manifests, `pnpm install --frozen-lockfile`
-- Copy source + export data, `pnpm build`
+- Copy source + export data, `pnpm build && pnpm prune --prod`
 
 **Stage 2 — Runtime (`node:24-alpine`):**
 - Install curl for health checks
-- Copy only `dist/client/` and `dist/server/` from builder (owned by `node` user)
+- Copy `dist/client/`, `dist/server/`, and pruned `node_modules/` from builder (owned by `node` user)
 - Run as non-root `node` user (UID 1000, built into official Node images)
 - Set `HOST=0.0.0.0` and `PORT=4321`
 - `CMD ["node", "./dist/server/entry.mjs"]`
@@ -35,13 +35,13 @@ Keep: `export/` (needed at build time for JSON data)
 
 Single-service compose with `curl`-based health check against `/api/health` endpoint.
 
-### 4. `src/middleware.ts`
+### 4. `src/pages/api/health.ts`
 
-Added `/api/health` endpoint as early return in existing middleware — returns plain `200 ok` before any redirect logic.
+Server-rendered API endpoint (`prerender = false`) that returns JSON `{ status: "ok", time: <epoch_ms> }`. Originally implemented as middleware, but Astro's static output mode doesn't run middleware at runtime — a proper server-rendered endpoint is required.
 
 ## Key Details
 
-- **No runtime deps:** The Astro standalone adapter bundles all code (including the 4.4MB episode data) into `dist/server/`. All imports are relative or `node:` built-ins.
+- **Production deps at runtime:** React, react-dom, and @astrojs/node are needed at runtime (not bundled by Astro). Build-only deps (astro, tailwindcss, typescript, etc.) are in `devDependencies` and stripped by `pnpm prune --prod`.
 - **Non-root execution:** Runtime runs as the built-in `node` user (UID 1000) for security.
 - **Layer caching:** Dependency manifests are copied before source so `pnpm install` only re-runs when deps change.
 - **Build context ~5.5MB:** Source + export JSON + lockfile (node_modules and dist excluded by .dockerignore).
@@ -51,6 +51,6 @@ Added `/api/health` endpoint as early return in existing middleware — returns 
 
 - `docker compose build` — succeeds
 - `docker compose up -d` — container starts
-- `curl http://localhost:4321/api/health` — returns "ok"
+- `curl http://localhost:4321/api/health` — returns `{"status":"ok","time":...}`
 - `docker inspect nexus-archive` — health check shows "healthy" after ~40s
 - `pnpm build` — still works locally (no regressions)

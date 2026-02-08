@@ -1,5 +1,5 @@
 export const prerender = false;
 
 export function GET() {
-  return new Response("ok", { status: 200 });
+  return Response.json({ status: "ok", time: Date.now() });
 }
