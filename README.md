@@ -1,4 +1,4 @@
-# nexus-simple
+# nexus-archive
 
 A static archive of [thenexus.tv](https://thenexus.tv), a podcast network that produced 1,384+ episodes across 13 series between 2011 and 2020. Built with Astro, TailwindCSS, and React.
 
