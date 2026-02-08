@@ -44,7 +44,10 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={ogUrl} />
     <title>{pageTitle}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body
     data-universe
@@ -98,6 +101,11 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
             href="/licenses/"
             class="text-gray-600 dark:text-stone-400 hover:text-gray-900 dark:hover:text-stone-100"
             >Licenses</a
+          >
+          <a
+            href="/contact/"
+            class="text-gray-600 dark:text-stone-400 hover:text-gray-900 dark:hover:text-stone-100"
+            >Contact</a
           >
         </div>
       </nav>
