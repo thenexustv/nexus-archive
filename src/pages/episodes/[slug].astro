@@ -25,10 +25,10 @@ const { prev, next } = getEpisodeNeighbors(slug!);
 <Base title={episode.formattedTitle} description={episode.description} ogType="article">
   <article class="max-w-3xl">
     <header class="mb-8">
-      <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+      <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-stone-400 mb-2">
         <a
           href={`/series/${episode.seriesSlug}/`}
-          class="text-blue-600 hover:text-blue-800"
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
         >
           {episode.seriesName}
         </a>
@@ -39,23 +39,23 @@ const { prev, next } = getEpisodeNeighbors(slug!);
       </div>
       <h1 class="text-3xl font-bold">{episode.name}</h1>
       {episode.description && (
-        <p class="mt-3 text-gray-600 text-lg">{episode.description}</p>
+        <p class="mt-3 text-gray-600 dark:text-stone-300 text-lg">{episode.description}</p>
       )}
     </header>
 
     {episode.media && (
-      <div class="mb-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+      <div class="mb-8 p-4 bg-gray-50 dark:bg-stone-900 border border-gray-200 dark:border-stone-700 rounded-lg shadow-sm">
         <audio controls preload="none" class="w-full">
           <source src={episode.media.url} type="audio/mpeg" />
         </audio>
-        <div class="mt-2 text-xs text-gray-500 flex gap-4">
+        <div class="mt-2 text-xs text-gray-500 dark:text-stone-400 flex gap-4">
           <span>Duration: {episode.media.length}</span>
           <span>
             Size: {(parseInt(episode.media.size) / 1_048_576).toFixed(1)} MB
           </span>
           <a
             href={episode.media.url}
-            class="text-blue-600 hover:text-blue-800"
+            class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             download
           >
             Download MP3
@@ -67,13 +67,13 @@ const { prev, next } = getEpisodeNeighbors(slug!);
     <div class="flex flex-wrap gap-4 mb-8 text-sm">
       {hosts.length > 0 && (
         <div>
-          <span class="text-gray-500">Hosts:</span>{" "}
+          <span class="text-gray-500 dark:text-stone-400">Hosts:</span>{" "}
           {hosts.map((p, i) => (
             <>
               {i > 0 && ", "}
               <a
                 href={`/people/${p.slug}/`}
-                class="text-blue-600 hover:text-blue-800"
+                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 {p.name}
               </a>
@@ -83,13 +83,13 @@ const { prev, next } = getEpisodeNeighbors(slug!);
       )}
       {guests.length > 0 && (
         <div>
-          <span class="text-gray-500">Guests:</span>{" "}
+          <span class="text-gray-500 dark:text-stone-400">Guests:</span>{" "}
           {guests.map((p, i) => (
             <>
               {i > 0 && ", "}
               <a
                 href={`/people/${p.slug}/`}
-                class="text-blue-600 hover:text-blue-800"
+                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 {p.name}
               </a>
@@ -100,13 +100,13 @@ const { prev, next } = getEpisodeNeighbors(slug!);
     </div>
 
     {(episode.fringeSlug || episode.parentSlug) && (
-      <div class="mb-8 p-3 bg-blue-50 border border-blue-200 rounded text-sm">
+      <div class="mb-8 p-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded text-sm">
         {episode.fringeSlug && (
           <p>
-            <span class="text-gray-600">Fringe episode:</span>{" "}
+            <span class="text-gray-600 dark:text-stone-300">Fringe episode:</span>{" "}
             <a
               href={`/episodes/${episode.fringeSlug}/`}
-              class="text-blue-600 hover:text-blue-800"
+              class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             >
               {episode.fringeSlug}
             </a>
@@ -114,10 +114,10 @@ const { prev, next } = getEpisodeNeighbors(slug!);
         )}
         {episode.parentSlug && (
           <p>
-            <span class="text-gray-600">Main episode:</span>{" "}
+            <span class="text-gray-600 dark:text-stone-300">Main episode:</span>{" "}
             <a
               href={`/episodes/${episode.parentSlug}/`}
-              class="text-blue-600 hover:text-blue-800"
+              class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             >
               {episode.parentSlug}
             </a>
@@ -126,17 +126,17 @@ const { prev, next } = getEpisodeNeighbors(slug!);
       </div>
     )}
 
-    <div class="prose prose-gray max-w-none" set:html={episode.content} />
+    <div class="prose prose-gray dark:prose-invert max-w-none" set:html={episode.content} />
 
     {(prev || next) && (
-      <nav class="mt-12 pt-6 border-t border-gray-200 flex justify-between items-start gap-4">
+      <nav class="mt-12 pt-6 border-t border-gray-200 dark:border-stone-800 flex justify-between items-start gap-4">
         {prev ? (
           <a
             href={`/episodes/${prev.slug}/`}
             class="group flex flex-col text-sm"
           >
-            <span class="text-gray-400 text-xs">&larr; Older</span>
-            <span class="text-blue-600 group-hover:text-blue-800">
+            <span class="text-gray-400 dark:text-stone-500 text-xs">&larr; Older</span>
+            <span class="text-blue-600 dark:text-blue-400 group-hover:text-blue-800 dark:group-hover:text-blue-300">
               #{prev.number}: {prev.name}
             </span>
           </a>
@@ -148,8 +148,8 @@ const { prev, next } = getEpisodeNeighbors(slug!);
             href={`/episodes/${next.slug}/`}
             class="group flex flex-col text-sm text-right"
           >
-            <span class="text-gray-400 text-xs">Newer &rarr;</span>
-            <span class="text-blue-600 group-hover:text-blue-800">
+            <span class="text-gray-400 dark:text-stone-500 text-xs">Newer &rarr;</span>
+            <span class="text-blue-600 dark:text-blue-400 group-hover:text-blue-800 dark:group-hover:text-blue-300">
               #{next.number}: {next.name}
             </span>
           </a>

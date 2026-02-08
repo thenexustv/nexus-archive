@@ -28,7 +28,7 @@ for (let i = start; i <= end; i++) {
     {hasPrev && (
       <a
         href={pageUrl(currentPage - 1)}
-        class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50"
+        class="px-3 py-1.5 border border-gray-300 dark:border-stone-700 rounded hover:bg-gray-50 dark:hover:bg-stone-800"
       >
         Previous
       </a>
@@ -36,8 +36,8 @@ for (let i = start; i <= end; i++) {
 
     {start > 1 && (
       <>
-        <a href={pageUrl(1)} class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">1</a>
-        {start > 2 && <span class="px-2 text-gray-400">…</span>}
+        <a href={pageUrl(1)} class="px-3 py-1.5 border border-gray-300 dark:border-stone-700 rounded hover:bg-gray-50 dark:hover:bg-stone-800">1</a>
+        {start > 2 && <span class="px-2 text-gray-400 dark:text-stone-500">…</span>}
       </>
     )}
 
@@ -48,7 +48,7 @@ for (let i = start; i <= end; i++) {
           "px-3 py-1.5 border rounded",
           page === currentPage
             ? "border-blue-600 bg-blue-600 text-white"
-            : "border-gray-300 hover:bg-gray-50",
+            : "border-gray-300 dark:border-stone-700 hover:bg-gray-50 dark:hover:bg-stone-800",
         ]}
         aria-current={page === currentPage ? "page" : undefined}
       >
@@ -58,15 +58,15 @@ for (let i = start; i <= end; i++) {
 
     {end < totalPages && (
       <>
-        {end < totalPages - 1 && <span class="px-2 text-gray-400">…</span>}
-        <a href={pageUrl(totalPages)} class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">{totalPages}</a>
+        {end < totalPages - 1 && <span class="px-2 text-gray-400 dark:text-stone-500">…</span>}
+        <a href={pageUrl(totalPages)} class="px-3 py-1.5 border border-gray-300 dark:border-stone-700 rounded hover:bg-gray-50 dark:hover:bg-stone-800">{totalPages}</a>
       </>
     )}
 
     {hasNext && (
       <a
         href={pageUrl(currentPage + 1)}
-        class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50"
+        class="px-3 py-1.5 border border-gray-300 dark:border-stone-700 rounded hover:bg-gray-50 dark:hover:bg-stone-800"
       >
         Next
       </a>

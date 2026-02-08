@@ -63,20 +63,20 @@ const dateRange =
 <Base title={series.name} description={series.description}>
   <div class="flex items-center gap-3 mb-1">
     <h1 class="text-2xl font-bold">{series.name}</h1>
-    <span class="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">
+    <span class="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded font-medium">
       Archived
     </span>
   </div>
   {series.description && (
-    <p class="text-gray-600 mb-2">{series.description}</p>
+    <p class="text-gray-600 dark:text-stone-300 mb-2">{series.description}</p>
   )}
-  <p class="text-sm text-gray-500 mb-6">
+  <p class="text-sm text-gray-500 dark:text-stone-400 mb-6">
     {series.episodeCount} episode{series.episodeCount !== 1 ? "s" : ""}
     {dateRange && <span> &middot; {dateRange}</span>}
     {totalPages > 1 && ` · Page ${currentPage} of ${totalPages}`}
   </p>
 
-  <div class="divide-y divide-gray-100">
+  <div class="divide-y divide-gray-100 dark:divide-stone-800">
     {episodes.map((ep) => <EpisodeCard episode={ep} />)}
   </div>
 

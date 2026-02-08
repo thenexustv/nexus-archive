@@ -63,6 +63,19 @@ After reviewing the original `nexus-core` WP plugin and `coprime` theme, 10 gaps
 - Added About, Licenses, Contact to footer
 - Added Licenses and About to nav bar
 
+### 15. Alphabetical series sorting — done
+- Changed `getAllSeries()` sort from episode count descending to alphabetical by name
+- Affects homepage, series index, about page, and series detail routing
+
+### 16. Homepage episodes header — done
+- Renamed "Recent Episodes" to "Episodes"
+
+### 17. Page size audit — done
+- Checked all 1545 pages for HTML weight
+- Largest page: 308KB (person page with 769 episodes)
+- Paginated series/episode pages top out ~48KB
+- No pages near the 2MB threshold
+
 ## Build Result
 
 - 1545 pages built in ~3-7s

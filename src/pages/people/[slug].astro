@@ -36,7 +36,7 @@ const guestEpisodes = episodes.filter((e) => e.role === "guest");
       )}
       <div>
         <h1 class="text-2xl font-bold mb-1">{person.name}</h1>
-        <p class="text-sm text-gray-500">
+        <p class="text-sm text-gray-500 dark:text-stone-400">
           {person.globalRole === "host" ? "Host" : "Guest"} &middot;
           {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
         </p>
@@ -44,7 +44,7 @@ const guestEpisodes = episodes.filter((e) => e.role === "guest");
     </div>
 
     {person.content && (
-      <div class="mb-8 text-gray-700 prose prose-gray max-w-none" set:html={person.content} />
+      <div class="mb-8 prose prose-gray dark:prose-invert max-w-none" set:html={person.content} />
     )}
 
     {hostedEpisodes.length > 0 && (
@@ -54,20 +54,20 @@ const guestEpisodes = episodes.filter((e) => e.role === "guest");
         </h2>
         <div class="space-y-2">
           {hostedEpisodes.map((ep) => (
-            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50">
+            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50 dark:border-stone-800">
               <a
                 href={`/episodes/${ep.slug}/`}
-                class="text-gray-900 hover:text-blue-600"
+                class="text-gray-900 dark:text-stone-100 hover:text-blue-600 dark:hover:text-blue-400"
               >
                 {ep.name}
               </a>
               <a
                 href={`/series/${ep.seriesSlug}/`}
-                class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded"
+                class="text-xs px-1.5 py-0.5 bg-gray-100 dark:bg-stone-800 text-gray-500 dark:text-stone-400 rounded"
               >
                 {ep.seriesName} #{ep.number}
               </a>
-              <time datetime={ep.createdAt} class="text-xs text-gray-400 ml-auto whitespace-nowrap">
+              <time datetime={ep.createdAt} class="text-xs text-gray-400 dark:text-stone-500 ml-auto whitespace-nowrap">
                 {format(new Date(ep.createdAt), "MMM d, yyyy")}
               </time>
             </div>
@@ -83,20 +83,20 @@ const guestEpisodes = episodes.filter((e) => e.role === "guest");
         </h2>
         <div class="space-y-2">
           {guestEpisodes.map((ep) => (
-            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50">
+            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50 dark:border-stone-800">
               <a
                 href={`/episodes/${ep.slug}/`}
-                class="text-gray-900 hover:text-blue-600"
+                class="text-gray-900 dark:text-stone-100 hover:text-blue-600 dark:hover:text-blue-400"
               >
                 {ep.name}
               </a>
               <a
                 href={`/series/${ep.seriesSlug}/`}
-                class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded"
+                class="text-xs px-1.5 py-0.5 bg-gray-100 dark:bg-stone-800 text-gray-500 dark:text-stone-400 rounded"
               >
                 {ep.seriesName} #{ep.number}
               </a>
-              <time datetime={ep.createdAt} class="text-xs text-gray-400 ml-auto whitespace-nowrap">
+              <time datetime={ep.createdAt} class="text-xs text-gray-400 dark:text-stone-500 ml-auto whitespace-nowrap">
                 {format(new Date(ep.createdAt), "MMM d, yyyy")}
               </time>
             </div>

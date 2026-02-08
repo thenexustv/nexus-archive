@@ -18,8 +18,8 @@ const hosts = people.filter((p) => p.globalRole === "host");
   <div class="max-w-3xl">
     <h1 class="text-2xl font-bold mb-6">About The Nexus</h1>
 
-    <div class="prose prose-gray max-w-none">
-      <p class="text-lg text-gray-600">Podcasts from the Technological Convergence</p>
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <p class="text-lg text-gray-600 dark:text-stone-300">Podcasts from the Technological Convergence</p>
 
       <p>
         The Nexus podcasts discuss a variety of topics including consumer technology reviews,
@@ -45,7 +45,7 @@ const hosts = people.filter((p) => p.globalRole === "host");
         {series.map((s) => (
           <li>
             <a href={`/series/${s.slug}/`}>{s.name}</a> &mdash; {s.episodeCount} episodes
-            {s.description && <span class="text-gray-500"> &mdash; {s.description}</span>}
+            {s.description && <span class="text-gray-500 dark:text-stone-400"> &mdash; {s.description}</span>}
           </li>
         ))}
       </ul>

@@ -8,7 +8,7 @@ const series = getAllSeries();
 
 <Base title="Series">
   <h1 class="text-2xl font-bold mb-1">Series</h1>
-  <p class="text-sm text-gray-500 mb-6">{series.length} series</p>
+  <p class="text-sm text-gray-500 dark:text-stone-400 mb-6">{series.length} series</p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {series.map((s) => {
@@ -28,20 +28,20 @@ const series = getAllSeries();
       return (
         <a
           href={`/series/${s.slug}/`}
-          class="block p-5 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+          class="block p-5 border border-gray-200 dark:border-stone-700 rounded-lg hover:border-gray-300 dark:hover:border-stone-600 hover:bg-gray-50 dark:hover:bg-stone-800 transition-colors shadow-sm"
         >
           <div class="flex items-center gap-2">
-            <span class="font-semibold text-gray-900">{s.name}</span>
-            <span class="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">
+            <span class="font-semibold text-gray-900 dark:text-stone-100">{s.name}</span>
+            <span class="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded font-medium">
               Archived
             </span>
           </div>
-          <div class="mt-1 text-sm text-gray-500">
+          <div class="mt-1 text-sm text-gray-500 dark:text-stone-400">
             {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
             {dateRange && <span> &middot; {dateRange}</span>}
           </div>
           {s.description && (
-            <p class="mt-2 text-sm text-gray-600">{s.description}</p>
+            <p class="mt-2 text-sm text-gray-600 dark:text-stone-300">{s.description}</p>
           )}
         </a>
       );

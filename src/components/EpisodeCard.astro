@@ -10,29 +10,29 @@ const { episode } = Astro.props;
 const date = format(new Date(episode.createdAt), "MMM d, yyyy");
 ---
 
-<article class="py-4 border-b border-gray-100 last:border-b-0">
+<article class="py-4 border-b border-gray-100 dark:border-stone-800 last:border-b-0 shadow-sm">
   <div class="flex items-baseline gap-2 flex-wrap">
     <a
       href={`/episodes/${episode.slug}/`}
-      class="font-medium text-gray-900 hover:text-blue-600"
+      class="font-medium text-gray-900 dark:text-stone-100 hover:text-blue-600 dark:hover:text-blue-400"
     >
       {episode.formattedTitle}
     </a>
     <a
       href={`/series/${episode.seriesSlug}/`}
-      class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+      class="text-xs px-2 py-0.5 bg-gray-100 dark:bg-stone-800 text-gray-600 dark:text-stone-400 rounded hover:bg-gray-200 dark:hover:bg-stone-700"
     >
       {episode.seriesName}
-      <span class="text-gray-400">#{episode.number}</span>
+      <span class="text-gray-400 dark:text-stone-500">#{episode.number}</span>
     </a>
   </div>
-  <div class="mt-1 text-sm text-gray-500 flex items-center gap-3">
+  <div class="mt-1 text-sm text-gray-500 dark:text-stone-400 flex items-center gap-3">
     <time datetime={episode.createdAt}>{date}</time>
     {episode.media && (
-      <span class="text-gray-400">{episode.media.length}</span>
+      <span class="text-gray-400 dark:text-stone-500">{episode.media.length}</span>
     )}
   </div>
   {episode.description && (
-    <p class="mt-1 text-sm text-gray-600 line-clamp-2">{episode.description}</p>
+    <p class="mt-1 text-sm text-gray-600 dark:text-stone-300 line-clamp-2">{episode.description}</p>
   )}
 </article>

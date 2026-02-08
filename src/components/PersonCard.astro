@@ -18,7 +18,7 @@ const bioPreview =
 
 <a
   href={`/people/${person.slug}/`}
-  class="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+  class="flex items-start gap-3 p-4 border border-gray-200 dark:border-stone-700 rounded-lg hover:border-gray-300 dark:hover:border-stone-600 hover:bg-gray-50 dark:hover:bg-stone-800 transition-colors shadow-sm"
 >
   {person.gravatarUrl && (
     <img
@@ -31,12 +31,12 @@ const bioPreview =
     />
   )}
   <div>
-    <div class="font-medium text-gray-900">{person.name}</div>
-    <div class="mt-1 text-sm text-gray-500">
+    <div class="font-medium text-gray-900 dark:text-stone-100">{person.name}</div>
+    <div class="mt-1 text-sm text-gray-500 dark:text-stone-400">
       {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
     </div>
     {bioPreview && (
-      <p class="mt-1 text-sm text-gray-600 line-clamp-2">{bioPreview}</p>
+      <p class="mt-1 text-sm text-gray-600 dark:text-stone-300 line-clamp-2">{bioPreview}</p>
     )}
   </div>
 </a>
