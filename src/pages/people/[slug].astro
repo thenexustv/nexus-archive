@@ -23,11 +23,25 @@ const guestEpisodes = episodes.filter((e) => e.role === "guest");
 
 <Base title={person.name}>
   <div class="max-w-3xl">
-    <h1 class="text-2xl font-bold mb-1">{person.name}</h1>
-    <p class="text-sm text-gray-500 mb-6">
-      {person.globalRole === "host" ? "Host" : "Guest"} &middot;
-      {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
-    </p>
+    <div class="flex items-start gap-4 mb-6">
+      {person.gravatarUrl && (
+        <img
+          src={person.gravatarUrl}
+          alt={person.name}
+          width="80"
+          height="80"
+          class="rounded-full flex-shrink-0"
+          loading="lazy"
+        />
+      )}
+      <div>
+        <h1 class="text-2xl font-bold mb-1">{person.name}</h1>
+        <p class="text-sm text-gray-500">
+          {person.globalRole === "host" ? "Host" : "Guest"} &middot;
+          {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
+        </p>
+      </div>
+    </div>
 
     {person.content && (
       <div class="mb-8 text-gray-700 prose prose-gray max-w-none" set:html={person.content} />

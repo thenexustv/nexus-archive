@@ -1,4 +1,5 @@
 ---
+import { format } from "date-fns";
 import Base from "../../layouts/Base.astro";
 import EpisodeCard from "../../components/EpisodeCard.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -44,15 +45,34 @@ const { series, episodes, currentPage, totalPages } = Astro.props;
 if (!series) {
   return Astro.redirect("/series/");
 }
+
+const firstYear = series.firstEpisodeDate
+  ? format(new Date(series.firstEpisodeDate), "yyyy")
+  : null;
+const lastYear = series.lastEpisodeDate
+  ? format(new Date(series.lastEpisodeDate), "yyyy")
+  : null;
+const dateRange =
+  firstYear && lastYear
+    ? firstYear === lastYear
+      ? firstYear
+      : `${firstYear}–${lastYear}`
+    : null;
 ---
 
 <Base title={series.name} description={series.description}>
-  <h1 class="text-2xl font-bold mb-1">{series.name}</h1>
+  <div class="flex items-center gap-3 mb-1">
+    <h1 class="text-2xl font-bold">{series.name}</h1>
+    <span class="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">
+      Archived
+    </span>
+  </div>
   {series.description && (
     <p class="text-gray-600 mb-2">{series.description}</p>
   )}
   <p class="text-sm text-gray-500 mb-6">
     {series.episodeCount} episode{series.episodeCount !== 1 ? "s" : ""}
+    {dateRange && <span> &middot; {dateRange}</span>}
     {totalPages > 1 && ` · Page ${currentPage} of ${totalPages}`}
   </p>
 

@@ -1,7 +1,7 @@
 ---
 import { format } from "date-fns";
 import Base from "../../layouts/Base.astro";
-import { getAllEpisodes, getEpisodeBySlug } from "../../data";
+import { getAllEpisodes, getEpisodeBySlug, getEpisodeNeighbors } from "../../data";
 
 export function getStaticPaths() {
   return getAllEpisodes().map((ep) => ({
@@ -19,9 +19,10 @@ if (!episode) {
 const date = format(new Date(episode.createdAt), "MMMM d, yyyy");
 const hosts = episode.people.filter((p) => p.role === "host");
 const guests = episode.people.filter((p) => p.role === "guest");
+const { prev, next } = getEpisodeNeighbors(slug!);
 ---
 
-<Base title={episode.name} description={episode.description}>
+<Base title={episode.formattedTitle} description={episode.description} ogType="article">
   <article class="max-w-3xl">
     <header class="mb-8">
       <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
@@ -126,5 +127,36 @@ const guests = episode.people.filter((p) => p.role === "guest");
     )}
 
     <div class="prose prose-gray max-w-none" set:html={episode.content} />
+
+    {(prev || next) && (
+      <nav class="mt-12 pt-6 border-t border-gray-200 flex justify-between items-start gap-4">
+        {prev ? (
+          <a
+            href={`/episodes/${prev.slug}/`}
+            class="group flex flex-col text-sm"
+          >
+            <span class="text-gray-400 text-xs">&larr; Older</span>
+            <span class="text-blue-600 group-hover:text-blue-800">
+              #{prev.number}: {prev.name}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )}
+        {next ? (
+          <a
+            href={`/episodes/${next.slug}/`}
+            class="group flex flex-col text-sm text-right"
+          >
+            <span class="text-gray-400 text-xs">Newer &rarr;</span>
+            <span class="text-blue-600 group-hover:text-blue-800">
+              #{next.number}: {next.name}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )}
+      </nav>
+    )}
   </article>
 </Base>

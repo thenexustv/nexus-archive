@@ -6,14 +6,37 @@ interface Props {
 }
 
 const { person } = Astro.props;
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "");
+}
+
+const bioText = person.content ? stripHtml(person.content).trim() : "";
+const bioPreview =
+  bioText.length > 120 ? bioText.slice(0, 120).trimEnd() + "…" : bioText;
 ---
 
 <a
   href={`/people/${person.slug}/`}
-  class="block p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+  class="flex items-start gap-3 p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
 >
-  <div class="font-medium text-gray-900">{person.name}</div>
-  <div class="mt-1 text-sm text-gray-500">
-    {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
+  {person.gravatarUrl && (
+    <img
+      src={person.gravatarUrl}
+      alt={person.name}
+      width="48"
+      height="48"
+      class="rounded-full flex-shrink-0"
+      loading="lazy"
+    />
+  )}
+  <div>
+    <div class="font-medium text-gray-900">{person.name}</div>
+    <div class="mt-1 text-sm text-gray-500">
+      {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
+    </div>
+    {bioPreview && (
+      <p class="mt-1 text-sm text-gray-600 line-clamp-2">{bioPreview}</p>
+    )}
   </div>
 </a>

@@ -1,4 +1,5 @@
 ---
+import { format } from "date-fns";
 import Base from "../../layouts/Base.astro";
 import { getAllSeries } from "../../data";
 
@@ -10,19 +11,40 @@ const series = getAllSeries();
   <p class="text-sm text-gray-500 mb-6">{series.length} series</p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {series.map((s) => (
-      <a
-        href={`/series/${s.slug}/`}
-        class="block p-5 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
-      >
-        <div class="font-semibold text-gray-900">{s.name}</div>
-        <div class="mt-1 text-sm text-gray-500">
-          {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
-        </div>
-        {s.description && (
-          <p class="mt-2 text-sm text-gray-600">{s.description}</p>
-        )}
-      </a>
-    ))}
+    {series.map((s) => {
+      const firstYear = s.firstEpisodeDate
+        ? format(new Date(s.firstEpisodeDate), "yyyy")
+        : null;
+      const lastYear = s.lastEpisodeDate
+        ? format(new Date(s.lastEpisodeDate), "yyyy")
+        : null;
+      const dateRange =
+        firstYear && lastYear
+          ? firstYear === lastYear
+            ? firstYear
+            : `${firstYear}–${lastYear}`
+          : null;
+
+      return (
+        <a
+          href={`/series/${s.slug}/`}
+          class="block p-5 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+        >
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-gray-900">{s.name}</span>
+            <span class="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">
+              Archived
+            </span>
+          </div>
+          <div class="mt-1 text-sm text-gray-500">
+            {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
+            {dateRange && <span> &middot; {dateRange}</span>}
+          </div>
+          {s.description && (
+            <p class="mt-2 text-sm text-gray-600">{s.description}</p>
+          )}
+        </a>
+      );
+    })}
   </div>
 </Base>

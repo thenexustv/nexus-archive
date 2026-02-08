@@ -16,7 +16,7 @@ const date = format(new Date(episode.createdAt), "MMM d, yyyy");
       href={`/episodes/${episode.slug}/`}
       class="font-medium text-gray-900 hover:text-blue-600"
     >
-      {episode.name}
+      {episode.formattedTitle}
     </a>
     <a
       href={`/series/${episode.seriesSlug}/`}
