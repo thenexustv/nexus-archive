@@ -62,6 +62,8 @@ export interface Series {
   slug: string;
   description: string;
   episodeCount: number;
+  firstEpisodeDate: string | null;
+  lastEpisodeDate: string | null;
 }
 
 export interface EpisodeMedia {
@@ -81,6 +83,7 @@ export interface EpisodePerson {
 export interface Episode {
   id: number;
   name: string;
+  formattedTitle: string;
   number: string;
   slug: string;
   content: string;
@@ -96,11 +99,18 @@ export interface Episode {
   parentSlug: string | null;
 }
 
+export interface EpisodeNeighbor {
+  slug: string;
+  name: string;
+  number: string;
+}
+
 export interface Person {
   id: number;
   name: string;
   slug: string;
   content: string;
+  gravatarUrl: string | null;
   globalRole: "host" | "guest";
   episodeCount: number;
 }

@@ -1,8 +1,10 @@
+import { createHash } from "node:crypto";
 import rawData from "../../export/nexus-export-1770519097.json";
 import type {
   RawExport,
   Series,
   Episode,
+  EpisodeNeighbor,
   Person,
   EpisodePerson,
   PersonEpisode,
@@ -93,30 +95,83 @@ for (const ep of data.episodes) {
   );
 }
 
+// --- Gravatar ---
+
+const personEmailById = new Map(data.people.map((p) => [p.id, p.email]));
+
+function gravatarUrl(email: string | undefined): string | null {
+  if (!email) return null;
+  const hash = createHash("md5")
+    .update(email.trim().toLowerCase())
+    .digest("hex");
+  return `https://www.gravatar.com/avatar/${hash}?s=160&d=mp`;
+}
+
+// --- Process content: external links open in new tabs ---
+
+function processContent(html: string): string {
+  return html.replace(
+    /<a\s+([^>]*?)href="(https?:\/\/[^"]*)"([^>]*)>/gi,
+    (match, before, url, after) => {
+      if (match.includes("target=")) return match;
+      return `<a ${before}href="${url}"${after} target="_blank" rel="noopener noreferrer">`;
+    },
+  );
+}
+
+// --- Series date ranges ---
+
+const seriesDateRange = new Map<
+  number,
+  { first: string | null; last: string | null }
+>();
+for (const series of data.series) {
+  const episodes = data.episodes.filter((e) => e.series_id === series.id);
+  if (episodes.length === 0) {
+    seriesDateRange.set(series.id, { first: null, last: null });
+    continue;
+  }
+  const sorted = episodes
+    .map((e) => e.created_at)
+    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  seriesDateRange.set(series.id, {
+    first: sorted[0],
+    last: sorted[sorted.length - 1],
+  });
+}
+
 // --- Resolved data ---
 
 export function getAllSeries(): Series[] {
   return data.series
     .filter((s) => (episodeCountBySeries.get(s.id) ?? 0) > 0)
-    .map((s) => ({
-      id: s.id,
-      name: s.name,
-      slug: s.slug,
-      description: s.description,
-      episodeCount: episodeCountBySeries.get(s.id) ?? 0,
-    }))
+    .map((s) => {
+      const dr = seriesDateRange.get(s.id);
+      return {
+        id: s.id,
+        name: s.name,
+        slug: s.slug,
+        description: s.description,
+        episodeCount: episodeCountBySeries.get(s.id) ?? 0,
+        firstEpisodeDate: dr?.first ?? null,
+        lastEpisodeDate: dr?.last ?? null,
+      };
+    })
     .sort((a, b) => b.episodeCount - a.episodeCount);
 }
 
 export function getSeriesBySlug(slug: string): Series | undefined {
   const raw = data.series.find((s) => s.slug === slug);
   if (!raw) return undefined;
+  const dr = seriesDateRange.get(raw.id);
   return {
     id: raw.id,
     name: raw.name,
     slug: raw.slug,
     description: raw.description,
     episodeCount: episodeCountBySeries.get(raw.id) ?? 0,
+    firstEpisodeDate: dr?.first ?? null,
+    lastEpisodeDate: dr?.last ?? null,
   };
 }
 
@@ -129,7 +184,7 @@ function resolveEpisode(raw: (typeof data.episodes)[0]): Episode {
         type: rawMedia.type,
         length: rawMedia.length,
         size: rawMedia.size,
-        url: rawMedia.url,
+        url: rawMedia.url.replace(/^http:\/\//i, "https://"),
       }
     : null;
 
@@ -147,12 +202,15 @@ function resolveEpisode(raw: (typeof data.episodes)[0]): Episode {
     })
     .filter((p): p is EpisodePerson => p !== null);
 
+  const formattedTitle = `${series.name} #${raw.number}: ${raw.name}`;
+
   return {
     id: raw.id,
     name: raw.name,
+    formattedTitle,
     number: raw.number,
     slug,
-    content: raw.content,
+    content: processContent(raw.content),
     description: raw.description,
     seriesId: raw.series_id,
     seriesSlug: series.slug,
@@ -189,6 +247,27 @@ export function getEpisodesBySeries(seriesSlug: string): Episode[] {
   return getAllEpisodes().filter((e) => e.seriesSlug === seriesSlug);
 }
 
+export function getEpisodeNeighbors(
+  slug: string,
+): { prev: EpisodeNeighbor | null; next: EpisodeNeighbor | null } {
+  const episode = getEpisodeBySlug(slug);
+  if (!episode) return { prev: null, next: null };
+
+  const seriesEpisodes = getEpisodesBySeries(episode.seriesSlug);
+  // seriesEpisodes is sorted newest-first; find current index
+  const idx = seriesEpisodes.findIndex((e) => e.slug === slug);
+
+  // "next" = newer episode (idx - 1), "prev" = older episode (idx + 1)
+  const newer = idx > 0 ? seriesEpisodes[idx - 1] : null;
+  const older =
+    idx < seriesEpisodes.length - 1 ? seriesEpisodes[idx + 1] : null;
+
+  const toNeighbor = (e: Episode | null): EpisodeNeighbor | null =>
+    e ? { slug: e.slug, name: e.name, number: e.number } : null;
+
+  return { prev: toNeighbor(older), next: toNeighbor(newer) };
+}
+
 export function getAllPeople(): Person[] {
   return data.people
     .map((p) => ({
@@ -196,6 +275,7 @@ export function getAllPeople(): Person[] {
       name: p.name,
       slug: personSlugById.get(p.id)!,
       content: p.content,
+      gravatarUrl: gravatarUrl(personEmailById.get(p.id)),
       globalRole: personGlobalRole.get(p.id) ?? ("guest" as const),
       episodeCount: (episodeRelsByPerson.get(p.id) ?? []).length,
     }))
