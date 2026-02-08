@@ -18,6 +18,23 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
 <!doctype html>
 <html lang="en">
   <head>
+    <!--
+
+      ___           ___           ___                    ___           ___           ___           ___           ___
+     /\  \         /\__\         /\  \                  /\__\         /\  \         |\__\         /\__\         /\  \
+     \:\  \       /:/  /        /::\  \                /::|  |       /::\  \        |:|  |       /:/  /        /::\  \
+      \:\  \     /:/__/        /:/\:\  \              /:|:|  |      /:/\:\  \       |:|  |      /:/  /        /:/\ \  \
+      /::\  \   /::\  \ ___   /::\~\:\  \            /:/|:|  |__   /::\~\:\  \      |:|__|__   /:/  /  ___   _\:\~\ \  \
+     /:/\:\__\ /:/\:\  /\__\ /:/\:\ \:\__\          /:/ |:| /\__\ /:/\:\ \:\__\ ____/::::\__\ /:/__/  /\__\ /\ \:\ \ \__\
+    /:/  \/__/ \/__\:\/:/  / \:\~\:\ \/__/          \/__|:|/:/  / \:\~\:\ \/__/ \::::/~~/~    \:\  \ /:/  / \:\ \:\ \/__/
+   /:/  /           \::/  /   \:\ \:\__\                |:/:/  /   \:\ \:\__\    ~~|:|~~|      \:\  /:/  /   \:\ \:\__\
+   \/__/            /:/  /     \:\ \/__/                |::/  /     \:\ \/__/      |:|  |       \:\/:/  /     \:\/:/  /
+                   /:/  /       \:\__\                  /:/  /       \:\__\        |:|  |        \::/  /       \::/  /
+                   \/__/         \/__/                  \/__/         \/__/         \|__|         \/__/         \/__/
+
+    Constructed by Ryan Rampersad. Originally at thenexus.tv, now preserved as an archive.
+
+    -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
@@ -30,12 +47,15 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body
+    data-universe
     class="bg-white dark:bg-stone-950 text-gray-900 dark:text-stone-100 min-h-screen flex flex-col"
   >
     <header
       class="group border-b border-gray-200 dark:border-stone-800 bg-gray-50 dark:bg-stone-900"
     >
-      <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center gap-6">
+      <nav
+        class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6"
+      >
         <a
           href="/"
           class="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -49,11 +69,11 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
             class="flex-shrink-0 grayscale group-hover:grayscale-0 transition-[filter] duration-300"
           />
           <span
-            class="font-league text-4xl uppercase tracking-wide text-gray-900 dark:text-stone-100"
+            class="font-league text-2xl sm:text-4xl uppercase tracking-wide text-gray-900 dark:text-stone-100"
             >THE NEXUS<span class="sr-only">.tv</span></span
           >
         </a>
-        <div class="flex gap-4 text-sm ml-auto">
+        <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm sm:ml-auto">
           <a
             href="/about/"
             class="text-gray-600 dark:text-stone-400 hover:text-gray-900 dark:hover:text-stone-100"
@@ -83,7 +103,7 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
       </nav>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-8 flex-1 w-full">
+    <main data-galaxy class="max-w-5xl mx-auto px-4 py-8 flex-1 w-full">
       <slot />
     </main>
 
@@ -91,10 +111,9 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
       class="border-t border-gray-200 dark:border-stone-800 bg-gray-50 dark:bg-stone-900 mt-auto"
     >
       <div
-        class="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 dark:text-stone-400"
+        class="max-w-5xl mx-auto px-4 py-8 text-sm text-gray-500 dark:text-stone-400 text-center"
       >
-        <p>{SITE_TITLE} &mdash; Podcasts from the Technological Convergence</p>
-        <div class="mt-2 flex flex-wrap gap-4">
+        <div class="flex flex-wrap justify-center gap-4">
           <a
             href="/about/"
             class="hover:text-gray-700 dark:hover:text-stone-300">About</a
@@ -116,6 +135,23 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
             class="hover:text-gray-700 dark:hover:text-stone-300">Contact</a
           >
         </div>
+
+        <p class="mt-4">
+          &copy; <span data-year>2026</span> — <a
+            href="/"
+            class="hover:text-gray-700 dark:hover:text-stone-300">The Nexus</a
+          >
+        </p>
+
+        <div class="mt-6">
+          <img
+            src="/images/nx-logo.png"
+            alt=""
+            width="64"
+            height="64"
+            class="nx-footer-logo mx-auto"
+          />
+        </div>
       </div>
     </footer>
 
@@ -129,6 +165,9 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
           1000 * 60 * 2.43,
         );
       }
+
+      const yearEl = document.querySelector("[data-year]");
+      if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
     </script>
   </body>
 </html>

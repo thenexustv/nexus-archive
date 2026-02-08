@@ -2,7 +2,12 @@
 import { format } from "date-fns";
 import Base from "../layouts/Base.astro";
 import EpisodeCard from "../components/EpisodeCard.astro";
-import { getAllEpisodes, getAllSeries, getAllPeople, SITE_TITLE } from "../data";
+import {
+  getAllEpisodes,
+  getAllSeries,
+  getAllPeople,
+  SITE_TITLE,
+} from "../data";
 
 const episodes = getAllEpisodes();
 const recentEpisodes = episodes.slice(0, 10);
@@ -14,16 +19,25 @@ const firstYear = format(new Date(Math.min(...allDates)), "yyyy");
 const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
 ---
 
-<Base description="Podcasts from the Technological Convergence. A preserved archive of thenexus.tv with all episodes, series, and people.">
+<Base
+  description="Podcasts from the Technological Convergence. A preserved archive of thenexus.tv with all episodes, series, and people."
+>
   <div class="space-y-12">
-    <section>
-      <h1 class="text-3xl font-bold">{SITE_TITLE}</h1>
-      <p class="mt-2 text-gray-600 dark:text-stone-300 text-lg">Podcasts from the Technological Convergence</p>
-      <p class="mt-3 text-gray-600 dark:text-stone-300">
-        The Nexus podcasts discuss a variety of topics including consumer technology news, developer news,
-        gaming news and occasionally scientific news. We love talking, learning and exploring the future.
+    <section data-villain>
+      <h1 class="font-league text-5xl uppercase tracking-wide">
+        THE NEXUS<span class="sr-only">.tv</span>
+      </h1>
+      <p class="mt-2 text-gray-600 dark:text-stone-300 text-lg">
+        Podcasts from the Technological Convergence
       </p>
-      <div class="mt-4 flex flex-wrap gap-4 text-sm text-gray-500 dark:text-stone-400">
+      <p class="mt-3 text-gray-600 dark:text-stone-300">
+        The Nexus podcasts discussed a variety of topics including consumer
+        technology news, developer news, gaming news and occasionally scientific
+        news. We loved talking, learning and exploring the future.
+      </p>
+      <div
+        class="mt-4 flex flex-wrap gap-4 text-sm text-gray-500 dark:text-stone-400"
+      >
         <span>{episodes.length.toLocaleString()} episodes</span>
         <span>&middot;</span>
         <span>{series.length} series</span>
@@ -32,19 +46,29 @@ const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
         <span>&middot;</span>
         <span>{firstYear}&ndash;{lastYear}</span>
       </div>
-      <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-900 dark:text-amber-200">
+      <div
+        class="mt-4 p-4 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-900 dark:text-amber-200"
+      >
         <p>
-          <strong>Archive Notice:</strong> thenexus.tv was a podcast network that ran from {firstYear} to {lastYear}.
-          This site is a preserved archive of all episodes. No new content is being produced.
-          <a href="/about/" class="underline hover:text-amber-700 dark:hover:text-amber-100">Learn more &rarr;</a>
+          <strong>Archive Notice:</strong> thenexus.tv was a podcast network that
+          produced episodes from {firstYear} to {lastYear}. This site is a
+          preserved archive of all episodes. No new content is being produced.
+          <a
+            href="/about/"
+            class="underline hover:text-amber-700 dark:hover:text-amber-100"
+            >Learn more &rarr;</a
+          >
         </p>
       </div>
     </section>
 
-    <section>
+    <section data-hero>
       <div class="flex items-baseline justify-between mb-4">
         <h2 class="text-xl font-semibold">Episodes</h2>
-        <a href="/episodes/" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+        <a
+          href="/episodes/"
+          class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+        >
           All episodes &rarr;
         </a>
       </div>
@@ -56,25 +80,34 @@ const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
     <section>
       <div class="flex items-baseline justify-between mb-4">
         <h2 class="text-xl font-semibold">Series</h2>
-        <a href="/series/" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+        <a
+          href="/series/"
+          class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+        >
           All series &rarr;
         </a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {series.map((s) => (
-          <a
-            href={`/series/${s.slug}/`}
-            class="block p-4 border border-gray-200 dark:border-stone-700 rounded-lg hover:border-gray-300 dark:hover:border-stone-600 hover:bg-gray-50 dark:hover:bg-stone-800 transition-colors shadow-sm"
-          >
-            <div class="font-medium text-gray-900 dark:text-stone-100">{s.name}</div>
-            <div class="mt-1 text-sm text-gray-500 dark:text-stone-400">
-              {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
-            </div>
-            {s.description && (
-              <p class="mt-2 text-sm text-gray-600 dark:text-stone-300 line-clamp-2">{s.description}</p>
-            )}
-          </a>
-        ))}
+        {
+          series.map((s) => (
+            <a
+              href={`/series/${s.slug}/`}
+              class="block p-4 border border-gray-200 dark:border-stone-700 rounded-lg hover:border-gray-300 dark:hover:border-stone-600 hover:bg-gray-50 dark:hover:bg-stone-800 transition-colors shadow-sm"
+            >
+              <div class="font-medium text-gray-900 dark:text-stone-100">
+                {s.name}
+              </div>
+              <div class="mt-1 text-sm text-gray-500 dark:text-stone-400">
+                {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
+              </div>
+              {s.description && (
+                <p class="mt-2 text-sm text-gray-600 dark:text-stone-300 line-clamp-2">
+                  {s.description}
+                </p>
+              )}
+            </a>
+          ))
+        }
       </div>
     </section>
   </div>

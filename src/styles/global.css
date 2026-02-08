@@ -25,3 +25,28 @@
 .nx-idle-spin {
   animation: logo-rotate 30s linear infinite;
 }
+
+.nx-footer-logo {
+  opacity: 0.3;
+  filter: blur(2px) grayscale(100%);
+}
+
+@media print {
+  body > *:not(style):not(script) {
+    display: none !important;
+  }
+
+  body {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "You cannot print podcasts!";
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+  }
+}
