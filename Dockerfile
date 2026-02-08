@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
-RUN pnpm build
+RUN pnpm build && pnpm prune --prod
 
 # Stage 2 — Runtime
 FROM node:24-alpine
@@ -20,6 +20,7 @@ WORKDIR /app
 
 COPY --from=builder --chown=node:node /app/dist/client/ ./dist/client/
 COPY --from=builder --chown=node:node /app/dist/server/ ./dist/server/
+COPY --from=builder --chown=node:node /app/node_modules/ ./node_modules/
 
 USER node
 
