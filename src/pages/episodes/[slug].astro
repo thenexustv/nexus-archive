@@ -1,6 +1,7 @@
 ---
 import { format } from "date-fns";
 import Base from "../../layouts/Base.astro";
+import AudioPlayer from "../../components/AudioPlayer";
 import { getAllEpisodes, getEpisodeBySlug, getEpisodeNeighbors } from "../../data";
 
 export function getStaticPaths() {
@@ -44,24 +45,13 @@ const { prev, next } = getEpisodeNeighbors(slug!);
     </header>
 
     {episode.media && (
-      <div class="mb-8 p-4 bg-gray-50 dark:bg-stone-900 border border-gray-200 dark:border-stone-700 rounded-lg shadow-sm">
-        <audio controls preload="none" class="w-full">
-          <source src={episode.media.url} type="audio/mpeg" />
-        </audio>
-        <div class="mt-2 text-xs text-gray-500 dark:text-stone-400 flex gap-4">
-          <span>Duration: {episode.media.length}</span>
-          <span>
-            Size: {(parseInt(episode.media.size) / 1_048_576).toFixed(1)} MB
-          </span>
-          <a
-            href={episode.media.url}
-            class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-            download
-          >
-            Download MP3
-          </a>
-        </div>
-      </div>
+      <AudioPlayer
+        client:visible
+        src={episode.media.url}
+        duration={episode.media.length}
+        fileSize={episode.media.size}
+        title={episode.formattedTitle}
+      />
     )}
 
     <div class="flex flex-wrap gap-4 mb-8 text-sm">
