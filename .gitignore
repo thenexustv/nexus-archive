@@ -26,5 +26,6 @@ pnpm-debug.log*
 # reference data (cloned repos, exports)
 .dev/reference/
 
-# raw export data
-export/
+# raw export data (allow the JSON used for site generation)
+export/*
+!export/nexus-export-1770519097.json
