@@ -78,6 +78,10 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
           <span
             class="font-league text-2xl sm:text-4xl uppercase tracking-wide text-gray-900 dark:text-stone-100"
             >THE NEXUS<span class="sr-only">.tv</span></span
+          ><span
+            id="nx-anniversary"
+            class="hidden ml-2 text-xs text-amber-600 dark:text-amber-400 self-center"
+            >&#127881; Est. 2011</span
           >
         </a>
         <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm sm:ml-auto">
@@ -180,6 +184,38 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
 
       const yearEl = document.querySelector("[data-year]");
       if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
+
+      console.info(
+        "%c  _   %c ___  __\n" +
+          "%c | \\ | %c\\ \\/ /\n" +
+          "%c |  \\| %c|>  < \n" +
+          "%c |_|\\__ %c/_/\\_\\",
+        "color: #E53030; font-family: monospace; font-size: 14px;",
+        "color: #2BA0E5; font-family: monospace; font-size: 14px;",
+        "color: #E53030; font-family: monospace; font-size: 14px;",
+        "color: #2BA0E5; font-family: monospace; font-size: 14px;",
+        "color: #E53030; font-family: monospace; font-size: 14px;",
+        "color: #2BA0E5; font-family: monospace; font-size: 14px;",
+        "color: #E53030; font-family: monospace; font-size: 14px;",
+        "color: #2BA0E5; font-family: monospace; font-size: 14px;"
+      );
+      console.info(
+        "%cLooking under the hood? %cWe always loved doing that too.",
+        "color: #E53030; font-style: italic;",
+        "color: #2BA0E5; font-style: italic;"
+      );
+
+      if (location.search.includes("crt")) {
+        document.body.classList.add("nx-fringe-mode");
+      }
+
+      (function () {
+        var now = new Date();
+        if (now.getMonth() === 10 && now.getDate() >= 10 && now.getDate() <= 16) {
+          var el = document.getElementById("nx-anniversary");
+          if (el) el.classList.remove("hidden");
+        }
+      })();
     </script>
   </body>
 </html>

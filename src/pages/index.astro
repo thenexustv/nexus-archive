@@ -12,13 +12,21 @@ const people = getAllPeople();
 const allDates = episodes.map((e) => new Date(e.createdAt).getTime());
 const firstYear = format(new Date(Math.min(...allDates)), "yyyy");
 const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
+
+const totalSeconds = episodes.reduce((sum, ep) => {
+  if (!ep.media?.length) return sum;
+  const parts = ep.media.length.split(":").map(Number);
+  return sum + (parts[0] * 3600 + parts[1] * 60 + parts[2]);
+}, 0);
+const totalHours = Math.ceil(totalSeconds / 3600);
+const totalDays = Math.ceil(totalSeconds / 86400);
 ---
 
 <Base
   description="Podcasts from the Technological Convergence. A preserved archive of thenexus.tv with all episodes, series, and people."
 >
   <div class="space-y-12">
-    <section data-villain class="nx-halftone -mx-4 px-4 py-6 rounded-lg">
+    <section data-villain class="nx-halftone -mx-4 -mt-8 px-4 py-6 sm:mx-[calc(-50vw+50%)] sm:px-[calc(50vw-50%)]">
       <h1 class="font-league text-5xl uppercase tracking-wide">
         THE NEXUS<span class="sr-only">.tv</span>
       </h1>
@@ -40,6 +48,8 @@ const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
         <span>{people.length} people</span>
         <span>&middot;</span>
         <span>{firstYear}&ndash;{lastYear}</span>
+        <span>&middot;</span>
+        <span class="cursor-help" title={`That's over ${totalDays} days of audio`}>{totalHours.toLocaleString()} hours of audio</span>
       </div>
       <div
         class="mt-4 p-4 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-900 dark:text-amber-200"
