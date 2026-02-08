@@ -31,6 +31,20 @@
   filter: blur(2px) grayscale(100%);
 }
 
+.nx-halftone {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nx-halftone {
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+  }
+}
+
 @media print {
   body > *:not(style):not(script) {
     display: none !important;

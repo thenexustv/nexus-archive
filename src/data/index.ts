@@ -317,4 +317,5 @@ export function getEpisodesByPerson(personSlug: string): PersonEpisode[] {
 }
 
 export const SITE_TITLE = "thenexus.tv";
+export const SITE_NAME = "The Nexus";
 export const EPISODES_PER_PAGE = 50;

@@ -10,6 +10,7 @@ import {
   getEpisodeBySlug,
   getAllPeople,
   SITE_TITLE,
+  SITE_NAME,
   EPISODES_PER_PAGE,
 } from "./index";
 
@@ -173,6 +174,10 @@ describe("getAllPeople", () => {
 describe("constants", () => {
   it("SITE_TITLE is thenexus.tv", () => {
     expect(SITE_TITLE).toBe("thenexus.tv");
+  });
+
+  it("SITE_NAME is The Nexus", () => {
+    expect(SITE_NAME).toBe("The Nexus");
   });
 
   it("EPISODES_PER_PAGE is 50", () => {

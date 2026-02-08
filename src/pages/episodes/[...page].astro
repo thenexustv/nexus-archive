@@ -30,7 +30,7 @@ const { episodes, currentPage, totalPages } = Astro.props;
 const allEpisodes = getAllEpisodes();
 ---
 
-<Base title="Episodes">
+<Base title={currentPage > 1 ? `Episodes (Page ${currentPage})` : "Episodes"}>
   <h1 class="text-2xl font-bold mb-1">Episodes</h1>
   <p class="text-sm text-gray-500 dark:text-stone-400 mb-6">
     {allEpisodes.length.toLocaleString()} episodes &middot; Page {currentPage} of {totalPages}

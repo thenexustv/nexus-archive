@@ -60,7 +60,7 @@ const dateRange =
     : null;
 ---
 
-<Base title={series.name} description={series.description}>
+<Base title={currentPage > 1 ? `${series.name} (Page ${currentPage})` : series.name} description={series.description}>
   <div class="flex items-center gap-3 mb-1">
     <h1 class="text-2xl font-bold">{series.name}</h1>
     <span class="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded font-medium">
