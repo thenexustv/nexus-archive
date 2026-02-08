@@ -1,0 +1,85 @@
+---
+import { format } from "date-fns";
+import Base from "../layouts/Base.astro";
+import { getAllEpisodes, getAllSeries, getAllPeople } from "../data";
+
+const episodes = getAllEpisodes();
+const series = getAllSeries();
+const people = getAllPeople();
+
+const allDates = episodes.map((e) => new Date(e.createdAt).getTime());
+const firstYear = format(new Date(Math.min(...allDates)), "yyyy");
+const lastYear = format(new Date(Math.max(...allDates)), "yyyy");
+
+const hosts = people.filter((p) => p.globalRole === "host");
+---
+
+<Base title="About" description="About The Nexus — a podcast network exploring the technological convergence, founded November 2011 in the Twin Cities, Minnesota.">
+  <div class="max-w-3xl">
+    <h1 class="text-2xl font-bold mb-6">About The Nexus</h1>
+
+    <div class="prose prose-gray max-w-none">
+      <p class="text-lg text-gray-600">Podcasts from the Technological Convergence</p>
+
+      <p>
+        The Nexus podcasts discuss a variety of topics including consumer technology reviews,
+        developer news, gaming news and discussions of issues facing our digital society.
+        Technology is weird. We love it, like it, hate it. It's all technology.
+      </p>
+
+      <h2>History</h2>
+      <p>
+        Ryan Rampersad and Matthew Petschl recorded the network's first podcast on November 13, 2011.
+        Rampersad officially founded The Nexus thirteen weeks later and launched the flagship show, At The Nexus.
+        Over the years the network grew to {series.length} series with {people.length} contributors producing
+        {episodes.length.toLocaleString()} episodes between {firstYear} and {lastYear}.
+      </p>
+
+      <h2>The Shows</h2>
+      <p>
+        The network produced {series.length} series covering technology news, reviews, developer topics,
+        gaming, and more. Browse all shows on the <a href="/series/">series page</a>.
+      </p>
+
+      <ul>
+        {series.map((s) => (
+          <li>
+            <a href={`/series/${s.slug}/`}>{s.name}</a> &mdash; {s.episodeCount} episodes
+            {s.description && <span class="text-gray-500"> &mdash; {s.description}</span>}
+          </li>
+        ))}
+      </ul>
+
+      <h2>The People</h2>
+      <p>
+        {hosts.length} hosts and {people.length - hosts.length} guests contributed to the network.
+        See everyone on the <a href="/people/">people page</a>.
+      </p>
+
+      <h2>Locations</h2>
+      <p>
+        The Nexus was primarily produced out of studios in the Twin Cities, Minnesota and near Pittsburgh, Pennsylvania.
+      </p>
+
+      <h2>Licenses</h2>
+      <p>
+        All shows were released under Creative Commons or public domain licenses.
+        See the full breakdown on the <a href="/licenses/">licenses page</a>.
+      </p>
+
+      <h2>About This Archive</h2>
+      <p>
+        This site is a preserved archive of thenexus.tv. No new episodes are being produced.
+        All {episodes.length.toLocaleString()} episodes across {series.length} series are available to browse and listen to.
+      </p>
+      <p>
+        The archive was built with
+        <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">Astro</a> from
+        a data export of the original WordPress site, which ran the open-source
+        <a href="https://github.com/thenexustv/nexus-core" target="_blank" rel="noopener noreferrer">Nexus Core</a> plugin and
+        <a href="https://github.com/thenexustv/coprime" target="_blank" rel="noopener noreferrer">Coprime</a> theme.
+        If you need to get in touch, visit the <a href="/contact/">contact page</a>.
+      </p>
+    </div>
+  </div>
+</Base>
