@@ -7,9 +7,10 @@ interface Props {
   description?: string;
   ogType?: string;
   canonicalUrl?: string;
+  feeds?: { title: string; url: string }[];
 }
 
-const { title, description, ogType = "website", canonicalUrl } = Astro.props;
+const { title, description, ogType = "website", canonicalUrl, feeds } = Astro.props;
 const pageTitle = title ? `${title} › ${SITE_NAME}` : `${SITE_NAME} › Podcasts from the Technological Convergence`;
 const pageDescription = description ?? "Archive of thenexus.tv podcasts";
 const ogUrl = canonicalUrl ?? Astro.url.href;
@@ -48,6 +49,9 @@ const ogUrl = canonicalUrl ?? Astro.url.href;
     <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    {feeds?.map((feed) => (
+      <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.url} />
+    ))}
   </head>
   <body
     data-universe

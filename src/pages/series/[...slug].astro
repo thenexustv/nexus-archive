@@ -60,12 +60,24 @@ const dateRange =
     : null;
 ---
 
-<Base title={currentPage > 1 ? `${series.name} (Page ${currentPage})` : series.name} description={series.description}>
+<Base
+  title={currentPage > 1 ? `${series.name} (Page ${currentPage})` : series.name}
+  description={series.description}
+  feeds={[
+    { title: `${series.name} RSS Feed`, url: `/series/${series.slug}/feed.xml` },
+    { title: `${series.name} (with Fringe) RSS Feed`, url: `/series/${series.slug}/feed-fringe.xml` },
+  ]}
+>
   <div class="flex items-center gap-3 mb-1">
     <h1 class="text-2xl font-bold">{series.name}</h1>
     <span class="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded font-medium">
       Archived
     </span>
+    <a href={`/series/${series.slug}/feed.xml`} class="text-xs text-gray-500 dark:text-stone-400 hover:text-gray-700 dark:hover:text-stone-300">Feed</a>
+    <a href={`/series/${series.slug}/feed-fringe.xml`} class="text-xs text-gray-500 dark:text-stone-400 hover:text-gray-700 dark:hover:text-stone-300">Feed + Fringe</a>
+    {series.itunesUrl && (
+      <a href={series.itunesUrl} class="text-xs text-gray-500 dark:text-stone-400 hover:text-gray-700 dark:hover:text-stone-300" target="_blank" rel="noopener noreferrer">iTunes</a>
+    )}
   </div>
   {series.description && (
     <p class="text-gray-600 dark:text-stone-300 mb-2">{series.description}</p>

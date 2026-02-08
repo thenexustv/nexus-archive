@@ -140,6 +140,26 @@ for (const series of data.series) {
   });
 }
 
+// --- iTunes URLs (from original thenexus.tv/shows/) ---
+
+const itunesUrlBySlug = new Map<string, string>([
+  ["atn", "https://itunes.apple.com/us/podcast/at-the-nexus/id762420984"],
+  ["cs", "https://itunes.apple.com/us/podcast/control-structure/id785765308"],
+  ["eb", "https://itunes.apple.com/us/podcast/eight-bit/id785765845"],
+  ["ib", "https://itunes.apple.com/us/podcast/in-bootcamp/id1451112320"],
+  ["ns", "https://itunes.apple.com/podcast/nexus-special/id1053279869"],
+  ["pk", "https://itunes.apple.com/podcast/podkit/id1053287516"],
+  [
+    "rsj",
+    "https://itunes.apple.com/us/podcast/robots-will-steal-your-job-the-nexus/id1448029332",
+  ],
+  ["so", "https://itunes.apple.com/us/podcast/second-opinion/id1061504473"],
+  [
+    "ted",
+    "https://itunes.apple.com/podcast/the-extra-dimension/id1053285445",
+  ],
+]);
+
 // --- Resolved data ---
 
 export function getAllSeries(): Series[] {
@@ -155,6 +175,7 @@ export function getAllSeries(): Series[] {
         episodeCount: episodeCountBySeries.get(s.id) ?? 0,
         firstEpisodeDate: dr?.first ?? null,
         lastEpisodeDate: dr?.last ?? null,
+        itunesUrl: itunesUrlBySlug.get(s.slug) ?? null,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -172,6 +193,7 @@ export function getSeriesBySlug(slug: string): Series | undefined {
     episodeCount: episodeCountBySeries.get(raw.id) ?? 0,
     firstEpisodeDate: dr?.first ?? null,
     lastEpisodeDate: dr?.last ?? null,
+    itunesUrl: itunesUrlBySlug.get(raw.slug) ?? null,
   };
 }
 

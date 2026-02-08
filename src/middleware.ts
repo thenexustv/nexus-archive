@@ -46,6 +46,18 @@ export const onRequest = defineMiddleware((context, next) => {
     }
   }
 
+  // /category/{slug}/feed → /series/{slug}/feed.xml or feed-fringe.xml
+  const feedMatch = pathname.match(/^\/category\/([^/]+)\/feed\/?$/);
+  if (feedMatch) {
+    const slug = feedMatch[1];
+    if (seriesSlugs.includes(slug)) {
+      if (context.url.searchParams.has("fringe")) {
+        return context.redirect(`/series/${slug}/feed-fringe.xml`, 301);
+      }
+      return context.redirect(`/series/${slug}/feed.xml`, 301);
+    }
+  }
+
   // Root-level /{slug} (e.g. /atn123) → /episodes/{slug}/
   const rootMatch = pathname.match(/^\/([a-z]+\d+)\/?$/);
   if (rootMatch) {

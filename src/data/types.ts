@@ -64,6 +64,7 @@ export interface Series {
   episodeCount: number;
   firstEpisodeDate: string | null;
   lastEpisodeDate: string | null;
+  itunesUrl: string | null;
 }
 
 export interface EpisodeMedia {

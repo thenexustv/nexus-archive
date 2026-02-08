@@ -43,6 +43,25 @@ const series = getAllSeries();
           {s.description && (
             <p class="mt-2 text-sm text-gray-600 dark:text-stone-300">{s.description}</p>
           )}
+          <p class="mt-2 text-xs text-gray-400 dark:text-stone-500">
+            <a
+              href={`/series/${s.slug}/feed.xml`}
+              class="hover:text-gray-600 dark:hover:text-stone-300"
+              onclick="event.stopPropagation()"
+            >RSS</a>
+            {s.itunesUrl && (
+              <span>
+                {" · "}
+                <a
+                  href={s.itunesUrl}
+                  class="hover:text-gray-600 dark:hover:text-stone-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onclick="event.stopPropagation()"
+                >iTunes</a>
+              </span>
+            )}
+          </p>
         </a>
       );
     })}
