@@ -21,7 +21,7 @@ function slugifyName(name: string): string {
 }
 
 function makeEpisodeSlug(seriesSlug: string, number: string): string {
-  return `${seriesSlug}-${number}`;
+  return `${seriesSlug}${number}`;
 }
 
 // --- Build lookup maps ---
