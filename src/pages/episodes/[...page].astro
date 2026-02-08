@@ -1,0 +1,44 @@
+---
+import Base from "../../layouts/Base.astro";
+import EpisodeCard from "../../components/EpisodeCard.astro";
+import Pagination from "../../components/Pagination.astro";
+import { getAllEpisodes, EPISODES_PER_PAGE } from "../../data";
+
+export function getStaticPaths() {
+  const episodes = getAllEpisodes();
+  const totalPages = Math.ceil(episodes.length / EPISODES_PER_PAGE);
+
+  return Array.from({ length: totalPages }, (_, i) => {
+    const page = i + 1;
+    const start = i * EPISODES_PER_PAGE;
+    const pageEpisodes = episodes.slice(start, start + EPISODES_PER_PAGE);
+
+    return {
+      params: { page: page === 1 ? undefined : String(page) },
+      props: { episodes: pageEpisodes, currentPage: page, totalPages },
+    };
+  });
+}
+
+interface Props {
+  episodes: ReturnType<typeof getAllEpisodes>;
+  currentPage: number;
+  totalPages: number;
+}
+
+const { episodes, currentPage, totalPages } = Astro.props;
+const allEpisodes = getAllEpisodes();
+---
+
+<Base title="Episodes">
+  <h1 class="text-2xl font-bold mb-1">Episodes</h1>
+  <p class="text-sm text-gray-500 mb-6">
+    {allEpisodes.length.toLocaleString()} episodes &middot; Page {currentPage} of {totalPages}
+  </p>
+
+  <div class="divide-y divide-gray-100">
+    {episodes.map((ep) => <EpisodeCard episode={ep} />)}
+  </div>
+
+  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/episodes" />
+</Base>

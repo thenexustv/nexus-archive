@@ -1,0 +1,64 @@
+---
+import Base from "../../layouts/Base.astro";
+import EpisodeCard from "../../components/EpisodeCard.astro";
+import Pagination from "../../components/Pagination.astro";
+import { getAllSeries, getEpisodesBySeries, EPISODES_PER_PAGE } from "../../data";
+
+export function getStaticPaths() {
+  const allSeries = getAllSeries();
+  const paths: { params: { slug: string }; props: Record<string, unknown> }[] = [];
+
+  for (const series of allSeries) {
+    const episodes = getEpisodesBySeries(series.slug);
+    const totalPages = Math.ceil(episodes.length / EPISODES_PER_PAGE);
+
+    for (let i = 0; i < totalPages; i++) {
+      const page = i + 1;
+      const start = i * EPISODES_PER_PAGE;
+      const pageEpisodes = episodes.slice(start, start + EPISODES_PER_PAGE);
+
+      paths.push({
+        params: { slug: page === 1 ? series.slug : `${series.slug}/${page}` },
+        props: {
+          series,
+          episodes: pageEpisodes,
+          currentPage: page,
+          totalPages,
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  series: ReturnType<typeof import("../../data").getSeriesBySlug>;
+  episodes: ReturnType<typeof import("../../data").getEpisodesBySeries>;
+  currentPage: number;
+  totalPages: number;
+}
+
+const { series, episodes, currentPage, totalPages } = Astro.props;
+
+if (!series) {
+  return Astro.redirect("/series/");
+}
+---
+
+<Base title={series.name} description={series.description}>
+  <h1 class="text-2xl font-bold mb-1">{series.name}</h1>
+  {series.description && (
+    <p class="text-gray-600 mb-2">{series.description}</p>
+  )}
+  <p class="text-sm text-gray-500 mb-6">
+    {series.episodeCount} episode{series.episodeCount !== 1 ? "s" : ""}
+    {totalPages > 1 && ` · Page ${currentPage} of ${totalPages}`}
+  </p>
+
+  <div class="divide-y divide-gray-100">
+    {episodes.map((ep) => <EpisodeCard episode={ep} />)}
+  </div>
+
+  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={`/series/${series.slug}`} />
+</Base>

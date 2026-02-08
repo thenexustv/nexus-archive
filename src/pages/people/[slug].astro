@@ -1,0 +1,94 @@
+---
+import { format } from "date-fns";
+import Base from "../../layouts/Base.astro";
+import { getAllPeople, getPersonBySlug, getEpisodesByPerson } from "../../data";
+
+export function getStaticPaths() {
+  return getAllPeople().map((p) => ({
+    params: { slug: p.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const person = getPersonBySlug(slug!);
+
+if (!person) {
+  return Astro.redirect("/people/");
+}
+
+const episodes = getEpisodesByPerson(person.slug);
+const hostedEpisodes = episodes.filter((e) => e.role === "host");
+const guestEpisodes = episodes.filter((e) => e.role === "guest");
+---
+
+<Base title={person.name}>
+  <div class="max-w-3xl">
+    <h1 class="text-2xl font-bold mb-1">{person.name}</h1>
+    <p class="text-sm text-gray-500 mb-6">
+      {person.globalRole === "host" ? "Host" : "Guest"} &middot;
+      {person.episodeCount} episode{person.episodeCount !== 1 ? "s" : ""}
+    </p>
+
+    {person.content && (
+      <div class="mb-8 text-gray-700 prose prose-gray max-w-none" set:html={person.content} />
+    )}
+
+    {hostedEpisodes.length > 0 && (
+      <section class="mb-8">
+        <h2 class="text-lg font-semibold mb-3">
+          Hosted ({hostedEpisodes.length})
+        </h2>
+        <div class="space-y-2">
+          {hostedEpisodes.map((ep) => (
+            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50">
+              <a
+                href={`/episodes/${ep.slug}/`}
+                class="text-gray-900 hover:text-blue-600"
+              >
+                {ep.name}
+              </a>
+              <a
+                href={`/series/${ep.seriesSlug}/`}
+                class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded"
+              >
+                {ep.seriesName} #{ep.number}
+              </a>
+              <time datetime={ep.createdAt} class="text-xs text-gray-400 ml-auto whitespace-nowrap">
+                {format(new Date(ep.createdAt), "MMM d, yyyy")}
+              </time>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {guestEpisodes.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold mb-3">
+          Guest appearances ({guestEpisodes.length})
+        </h2>
+        <div class="space-y-2">
+          {guestEpisodes.map((ep) => (
+            <div class="flex items-baseline gap-2 text-sm py-1.5 border-b border-gray-50">
+              <a
+                href={`/episodes/${ep.slug}/`}
+                class="text-gray-900 hover:text-blue-600"
+              >
+                {ep.name}
+              </a>
+              <a
+                href={`/series/${ep.seriesSlug}/`}
+                class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded"
+              >
+                {ep.seriesName} #{ep.number}
+              </a>
+              <time datetime={ep.createdAt} class="text-xs text-gray-400 ml-auto whitespace-nowrap">
+                {format(new Date(ep.createdAt), "MMM d, yyyy")}
+              </time>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</Base>

@@ -1,0 +1,130 @@
+---
+import { format } from "date-fns";
+import Base from "../../layouts/Base.astro";
+import { getAllEpisodes, getEpisodeBySlug } from "../../data";
+
+export function getStaticPaths() {
+  return getAllEpisodes().map((ep) => ({
+    params: { slug: ep.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const episode = getEpisodeBySlug(slug!);
+
+if (!episode) {
+  return Astro.redirect("/episodes/");
+}
+
+const date = format(new Date(episode.createdAt), "MMMM d, yyyy");
+const hosts = episode.people.filter((p) => p.role === "host");
+const guests = episode.people.filter((p) => p.role === "guest");
+---
+
+<Base title={episode.name} description={episode.description}>
+  <article class="max-w-3xl">
+    <header class="mb-8">
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+        <a
+          href={`/series/${episode.seriesSlug}/`}
+          class="text-blue-600 hover:text-blue-800"
+        >
+          {episode.seriesName}
+        </a>
+        <span>&middot;</span>
+        <span>#{episode.number}</span>
+        <span>&middot;</span>
+        <time datetime={episode.createdAt}>{date}</time>
+      </div>
+      <h1 class="text-3xl font-bold">{episode.name}</h1>
+      {episode.description && (
+        <p class="mt-3 text-gray-600 text-lg">{episode.description}</p>
+      )}
+    </header>
+
+    {episode.media && (
+      <div class="mb-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+        <audio controls preload="none" class="w-full">
+          <source src={episode.media.url} type="audio/mpeg" />
+        </audio>
+        <div class="mt-2 text-xs text-gray-500 flex gap-4">
+          <span>Duration: {episode.media.length}</span>
+          <span>
+            Size: {(parseInt(episode.media.size) / 1_048_576).toFixed(1)} MB
+          </span>
+          <a
+            href={episode.media.url}
+            class="text-blue-600 hover:text-blue-800"
+            download
+          >
+            Download MP3
+          </a>
+        </div>
+      </div>
+    )}
+
+    <div class="flex flex-wrap gap-4 mb-8 text-sm">
+      {hosts.length > 0 && (
+        <div>
+          <span class="text-gray-500">Hosts:</span>{" "}
+          {hosts.map((p, i) => (
+            <>
+              {i > 0 && ", "}
+              <a
+                href={`/people/${p.slug}/`}
+                class="text-blue-600 hover:text-blue-800"
+              >
+                {p.name}
+              </a>
+            </>
+          ))}
+        </div>
+      )}
+      {guests.length > 0 && (
+        <div>
+          <span class="text-gray-500">Guests:</span>{" "}
+          {guests.map((p, i) => (
+            <>
+              {i > 0 && ", "}
+              <a
+                href={`/people/${p.slug}/`}
+                class="text-blue-600 hover:text-blue-800"
+              >
+                {p.name}
+              </a>
+            </>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {(episode.fringeSlug || episode.parentSlug) && (
+      <div class="mb-8 p-3 bg-blue-50 border border-blue-200 rounded text-sm">
+        {episode.fringeSlug && (
+          <p>
+            <span class="text-gray-600">Fringe episode:</span>{" "}
+            <a
+              href={`/episodes/${episode.fringeSlug}/`}
+              class="text-blue-600 hover:text-blue-800"
+            >
+              {episode.fringeSlug}
+            </a>
+          </p>
+        )}
+        {episode.parentSlug && (
+          <p>
+            <span class="text-gray-600">Main episode:</span>{" "}
+            <a
+              href={`/episodes/${episode.parentSlug}/`}
+              class="text-blue-600 hover:text-blue-800"
+            >
+              {episode.parentSlug}
+            </a>
+          </p>
+        )}
+      </div>
+    )}
+
+    <div class="prose prose-gray max-w-none" set:html={episode.content} />
+  </article>
+</Base>

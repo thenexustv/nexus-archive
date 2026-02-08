@@ -1,0 +1,28 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getAllSeries } from "../../data";
+
+const series = getAllSeries();
+---
+
+<Base title="Series">
+  <h1 class="text-2xl font-bold mb-1">Series</h1>
+  <p class="text-sm text-gray-500 mb-6">{series.length} series</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {series.map((s) => (
+      <a
+        href={`/series/${s.slug}/`}
+        class="block p-5 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+      >
+        <div class="font-semibold text-gray-900">{s.name}</div>
+        <div class="mt-1 text-sm text-gray-500">
+          {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
+        </div>
+        {s.description && (
+          <p class="mt-2 text-sm text-gray-600">{s.description}</p>
+        )}
+      </a>
+    ))}
+  </div>
+</Base>

@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import EpisodeCard from "../components/EpisodeCard.astro";
+import { getAllEpisodes, getAllSeries, SITE_TITLE } from "../data";
+
+const episodes = getAllEpisodes();
+const recentEpisodes = episodes.slice(0, 10);
+const series = getAllSeries();
+---
+
+<Base>
+  <div class="space-y-12">
+    <section>
+      <h1 class="text-3xl font-bold">{SITE_TITLE}</h1>
+      <p class="mt-2 text-gray-600 text-lg">
+        A podcast network archive with {episodes.length.toLocaleString()} episodes
+        across {series.length} series.
+      </p>
+    </section>
+
+    <section>
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="text-xl font-semibold">Recent Episodes</h2>
+        <a href="/episodes/" class="text-sm text-blue-600 hover:text-blue-800">
+          All episodes &rarr;
+        </a>
+      </div>
+      <div class="divide-y divide-gray-100">
+        {recentEpisodes.map((ep) => <EpisodeCard episode={ep} />)}
+      </div>
+    </section>
+
+    <section>
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="text-xl font-semibold">Series</h2>
+        <a href="/series/" class="text-sm text-blue-600 hover:text-blue-800">
+          All series &rarr;
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {series.map((s) => (
+          <a
+            href={`/series/${s.slug}/`}
+            class="block p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors"
+          >
+            <div class="font-medium text-gray-900">{s.name}</div>
+            <div class="mt-1 text-sm text-gray-500">
+              {s.episodeCount} episode{s.episodeCount !== 1 ? "s" : ""}
+            </div>
+            {s.description && (
+              <p class="mt-2 text-sm text-gray-600 line-clamp-2">{s.description}</p>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
