@@ -6,11 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 nexus-simple — a static archive of thenexus.tv, a podcast network with ~1384 episodes across 13 series. Built with Astro, TailwindCSS, and React. Data sourced from a JSON export at `export/nexus-export-1770519097.json`.
 
+## Hosting
+
+Deployed as a standalone Node server (Astro + `@astrojs/node` adapter) in a Podman container. Uses `output: 'server'` with `export const prerender = true` on all page files so they are prebuilt as static HTML while middleware runs at request time for URL redirects (e.g., `/episode/slug` → `/episodes/slug/`). New pages must include `export const prerender = true` in their frontmatter.
+
 ## Commands
 
 - `pnpm dev` — Start local dev server
 - `pnpm build` — Build static site to `dist/`
 - `pnpm preview` — Preview the built site
+- `node dist/server/entry.mjs` — Run the production server locally
 - `pnpm astro check` — Type check
 
 ## Architecture

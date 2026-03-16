@@ -14,6 +14,40 @@ pnpm preview    # Preview the built site
 pnpm test       # Run tests
 ```
 
+## Hosting
+
+The site runs as a standalone Node server using the `@astrojs/node` adapter, deployed in a Podman container.
+
+### Why `output: 'server'` instead of `output: 'static'`
+
+Astro is configured with `output: 'server'` even though every page is prerendered as static HTML (`export const prerender = true` in each page file). This is intentional.
+
+With `output: 'static'`, the node adapter acts as a plain static file server. Requests that don't match a prebuilt file (e.g., `/episode/ted20/`) are 404'd immediately — Astro middleware **never runs at request time** in static mode. It only runs during the build. This is a significant and poorly documented limitation of the Astro node standalone adapter.
+
+By using `output: 'server'` with prerendered pages, we get the best of both worlds:
+- **Pages are still prebuilt as static HTML** at build time (same performance as static mode)
+- **Middleware runs at request time** for any path that doesn't match a static file, enabling redirects from old WordPress URLs
+
+This matters because the original WordPress site used `/episode/ted20` (singular) while the archive uses `/episodes/ted20/` (plural). The middleware in `src/middleware.ts` handles these redirects so old links, bookmarks, and search engine results continue to work.
+
+### Redirect routes handled by middleware
+
+| Old URL | Redirects to |
+|---|---|
+| `/episode/{slug}` | `/episodes/{slug}/` (with slug normalization) |
+| `/episode/` | `/episodes/` |
+| `/{slug}` (e.g., `/ted20`) | `/episodes/{slug}/` |
+| `/category/{series}/feed` | `/series/{series}/feed.xml` |
+
+Slug normalization converts dashed formats (`atn-1`) to the canonical dashless format (`atn1`).
+
+### Running locally
+
+```bash
+pnpm build
+node dist/server/entry.mjs
+```
+
 ## Architecture
 
 ### Data Layer
@@ -37,7 +71,7 @@ Episode slugs follow the format `{series_slug}{number}` (e.g., `atn1`, `tf130`).
 | `/contact/` | Contact page |
 | `/licenses/` | Creative Commons license details |
 
-A middleware layer (`src/middleware.ts`) handles redirects from old WordPress-style URLs (e.g., `/episode/atn-1/` redirects to `/episodes/atn1/`).
+See [Hosting](#hosting) for details on how middleware handles redirects from old WordPress-style URLs.
 
 ### Components
 
