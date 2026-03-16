@@ -22,15 +22,17 @@ The site runs as a standalone Node server using the `@astrojs/node` adapter, dep
 
 Astro is configured with `output: 'server'` even though every page is prerendered as static HTML (`export const prerender = true` in each page file). This is intentional.
 
-With `output: 'static'`, the node adapter acts as a plain static file server. Requests that don't match a prebuilt file (e.g., `/episode/ted20/`) are 404'd immediately — Astro middleware **never runs at request time** in static mode. It only runs during the build. This is a significant and poorly documented limitation of the Astro node standalone adapter.
+With `output: 'static'`, the node adapter acts as a plain static file server. Requests that don't match a prebuilt file (e.g., `/episode/ted20/`) are 404'd immediately — **Astro middleware never runs at request time** in static mode, and neither do server-rendered routes. This is a significant and poorly documented limitation of the Astro node standalone adapter.
 
 By using `output: 'server'` with prerendered pages, we get the best of both worlds:
 - **Pages are still prebuilt as static HTML** at build time (same performance as static mode)
-- **Middleware runs at request time** for any path that doesn't match a static file, enabling redirects from old WordPress URLs
+- **Server-rendered route files** can handle requests at runtime for paths that don't match a static file
 
-This matters because the original WordPress site used `/episode/ted20` (singular) while the archive uses `/episodes/ted20/` (plural). The middleware in `src/middleware.ts` handles these redirects so old links, bookmarks, and search engine results continue to work.
+This matters because the original WordPress site used `/episode/ted20` (singular) while the archive uses `/episodes/ted20/` (plural). Server-rendered redirect routes handle these so old links, bookmarks, and search engine results continue to work.
 
-### Redirect routes handled by middleware
+**Important caveat:** Even with `output: 'server'`, Astro middleware does not reliably run at request time for paths without a matching route. Redirects are therefore implemented as server-rendered route files (e.g., `src/pages/episode/[slug].ts`, `src/pages/[slug].ts`) rather than in middleware. The middleware in `src/middleware.ts` exists as a secondary layer but should not be relied upon as the sole redirect mechanism.
+
+### Redirect routes
 
 | Old URL | Redirects to |
 |---|---|
@@ -71,7 +73,7 @@ Episode slugs follow the format `{series_slug}{number}` (e.g., `atn1`, `tf130`).
 | `/contact/` | Contact page |
 | `/licenses/` | Creative Commons license details |
 
-See [Hosting](#hosting) for details on how middleware handles redirects from old WordPress-style URLs.
+See [Hosting](#hosting) for details on how server-rendered redirect routes handle old WordPress-style URLs.
 
 ### Components
 

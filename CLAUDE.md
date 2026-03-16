@@ -8,7 +8,7 @@ nexus-simple — a static archive of thenexus.tv, a podcast network with ~1384 e
 
 ## Hosting
 
-Deployed as a standalone Node server (Astro + `@astrojs/node` adapter) in a Podman container. Uses `output: 'server'` with `export const prerender = true` on all page files so they are prebuilt as static HTML while middleware runs at request time for URL redirects (e.g., `/episode/slug` → `/episodes/slug/`). New pages must include `export const prerender = true` in their frontmatter.
+Deployed as a standalone Node server (Astro + `@astrojs/node` adapter) in a Podman container. Uses `output: 'server'` with `export const prerender = true` on all content page files so they are prebuilt as static HTML. URL redirects from old WordPress paths are handled by server-rendered route files (not middleware — Astro middleware does not run at request time with the node standalone adapter). New content pages must include `export const prerender = true` in their frontmatter. Redirect routes must NOT set prerender.
 
 ## Commands
 
