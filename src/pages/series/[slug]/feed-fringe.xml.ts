@@ -1,3 +1,5 @@
+export const prerender = true;
+
 import type { APIRoute, GetStaticPaths } from "astro";
 import {
   getAllSeries,
