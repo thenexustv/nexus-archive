@@ -50,6 +50,50 @@ pnpm build
 node dist/server/entry.mjs
 ```
 
+### Deploying with Podman
+
+The production server (grail, Ubuntu 24.04) runs the site as a rootless Podman container managed by systemd via [Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html). The full setup story — including Podman installation, rootless containers, lingering, and networking — is documented in `.dev/plans/plan13.md`.
+
+```
+Internet → Apache (TLS termination) → 127.0.0.1:4321 (Podman container)
+```
+
+The Quadlet unit file is at `deploy/nexus-archive.container` and gets installed to `~/.config/containers/systemd/` on the server. It tells systemd how to run the container: which image, port binding, environment variables, healthcheck, and restart policy.
+
+**Initial setup** (one-time, on the server):
+
+```bash
+# Build the image from docker-compose.yml
+podman compose build
+
+# Install the Quadlet file and start the service
+cp deploy/nexus-archive.container ~/.config/containers/systemd/
+systemctl --user daemon-reload
+systemctl --user start nexus-archive
+```
+
+Do **not** run `systemctl --user enable` — Quadlet-generated services handle auto-start via the `[Install]` section automatically. It will fail with "unit is transient or generated," which is expected.
+
+**Deploying updates:**
+
+```bash
+git pull
+podman compose build
+systemctl --user restart nexus-archive
+```
+
+**Managing the service:**
+
+```bash
+systemctl --user start nexus-archive    # Start
+systemctl --user stop nexus-archive     # Stop
+systemctl --user restart nexus-archive  # Restart (after rebuilding image)
+systemctl --user status nexus-archive   # Check status + health
+journalctl --user -u nexus-archive -f   # Tail logs
+```
+
+The container exposes port 4321 on localhost only (`127.0.0.1:4321`). Apache reverse-proxies to it (see `.dev/plans/plan12.md`). A healthcheck pings `/api/health` every 30 seconds.
+
 ## Architecture
 
 ### Data Layer

@@ -1,0 +1,21 @@
+[Unit]
+Description=nexus-archive (thenexus.tv)
+After=local-fs.target
+
+[Container]
+Image=localhost/nexus-archive_nexus-archive:latest
+PublishPort=127.0.0.1:4321:4321
+Environment=HOST=0.0.0.0
+Environment=PORT=4321
+HealthCmd=curl -sf http://localhost:4321/api/health
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=10s
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target
