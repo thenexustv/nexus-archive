@@ -7,5 +7,5 @@ export const GET: APIRoute = ({ params, redirect }) => {
   if (slug && getEpisodeBySlug(slug)) {
     return redirect(`/episodes/${slug}/`, 301);
   }
-  return new Response("Not found", { status: 404 });
+  return redirect("/404", 302);
 };

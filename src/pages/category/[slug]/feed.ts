@@ -11,5 +11,5 @@ export const GET: APIRoute = ({ params, url, redirect }) => {
     }
     return redirect(`/series/${slug}/feed.xml`, 301);
   }
-  return new Response("Not found", { status: 404 });
+  return redirect("/404", 302);
 };
