@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getAllSeries } from "../../../data";
+import { notFoundResponse } from "../../../data/not-found";
 
 const seriesSlugs = getAllSeries().map((s) => s.slug);
 
@@ -11,5 +12,5 @@ export const GET: APIRoute = ({ params, url, redirect }) => {
     }
     return redirect(`/series/${slug}/feed.xml`, 301);
   }
-  return redirect("/404", 302);
+  return notFoundResponse();
 };
